@@ -19,11 +19,6 @@
         "*://*/*"
     ],
     "background": {
-        "service_worker": "background.js",
-        "script": [
-            {
-                "js": "drag.js"
-            }
-        ]
+        "service_worker": "background.js"
     }
 }
