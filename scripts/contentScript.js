@@ -1,6 +1,7 @@
 const popup = document.createElement('div');
 
 const headSection = document.createElement('section');
+const btn_close = document.createElement("button");
 
 const buttonSection = document.createElement('section');
 const btn_avrageArival = document.createElement('button');
@@ -10,6 +11,7 @@ const tableSection = document.createElement('section');
 const table = document.createElement('table');
 
 initPopup();
+openPopup();
 dragElement(popup);
 
 function initPopup() {
@@ -17,6 +19,11 @@ function initPopup() {
     popup.id = "popup";
 
     headSection.id = "popup_header";
+
+    btn_close.classList.add("btn");
+    btn_close.classList.add("blank");
+    btn_close.style.backgroundImage = `url('${chrome.runtime.getURL("img/close.png")}')`;
+    btn_close.addEventListener('click', handleCloseClick);
 
     buttonSection.classList.add("section");
 
@@ -30,6 +37,10 @@ function initPopup() {
     btn_toggleEdit.classList.add("btn");
     btn_toggleEdit.addEventListener('click', handleToggleEditClick);
 
+
+
+    headSection.appendChild(btn_close);
+
     buttonSection.appendChild(btn_avrageArival);
     buttonSection.appendChild(btn_toggleEdit);
 
@@ -38,8 +49,17 @@ function initPopup() {
     popup.appendChild(headSection);
     popup.appendChild(buttonSection);
     popup.appendChild(tableSection);
+}
 
+function openPopup(){
     document.body.appendChild(popup);
+}
+function showPopup(){
+    popup.style.visibility = "true";
+}
+
+function handleCloseClick(){
+    popup.style.visibility = "false";
 }
 
 function handleAvrageArivalClick() {

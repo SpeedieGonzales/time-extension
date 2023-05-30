@@ -11,14 +11,25 @@
         "default_title": "ZeitManagement BrowserExtension"
     },
     "icons": {
-        "16": "img/icon16.png",
-        "48": "img/icon48.png",
-        "128": "img/icon128.png"
+        "16": "img/icon/icon16.png",
+        "48": "img/icon/icon48.png",
+        "128": "img/icon/icon128.png"
     },
     "host_permissions": [
-        "*://*/*"
+        "https://itenax.tachoplus.com:8080/frm_wf_rich.moba"
     ],
     "background": {
         "service_worker": "background.js"
-    }
+    },
+    "web_accessible_resources": [
+        {
+            "resources": [
+                "img/icon/icon16.png",
+                "img/close.png"
+            ],
+            "matches": [
+                "https://itenax.tachoplus.com:8080/*"
+            ]
+        }
+    ]
 }
