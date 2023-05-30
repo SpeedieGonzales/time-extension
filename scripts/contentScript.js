@@ -24,32 +24,34 @@ function initPopup() {
 
   tableSection.classList.add("section");
 
+  table.id = "ContentTable";
+
   btn_avrageArival.textContent = "Arrival";
   btn_avrageArival.id = 1;
   btn_avrageArival.classList.add("btn");
   btn_avrageArival.classList.add("tablinks");
-  btn_avrageArival.addEventListener("click", handleAvrageArivalClick);
   btn_avrageArival.addEventListener("click", function () {
     openTab(1);
   });
+  btn_avrageArival.addEventListener("click", handleAvrageArivalClick);
 
   btn_toggleEdit.textContent = "Editable";
   btn_toggleEdit.id = 2;
   btn_toggleEdit.classList.add("btn");
   btn_toggleEdit.classList.add("tablinks");
-  btn_toggleEdit.addEventListener("click", handleToggleEditClick);
   btn_toggleEdit.addEventListener("click", function () {
     openTab(2);
   });
+  btn_toggleEdit.addEventListener("click", handleToggleEditClick);
 
   btn_calculate.textContent = "Calculate";
   btn_calculate.id = 3;
   btn_calculate.classList.add("btn");
   btn_calculate.classList.add("tablinks");
-  btn_calculate.addEventListener("click", displayCalculateStuff);
   btn_calculate.addEventListener("click", function () {
     openTab(3);
   });
+  btn_calculate.addEventListener("click", displayCalculateStuff);
 
   buttonSection.appendChild(btn_avrageArival);
   buttonSection.appendChild(btn_toggleEdit);
@@ -71,6 +73,8 @@ function openTab(tabID) {
   });
   var currentTab = document.getElementById(tabID);
   currentTab.classList.add("active");
+  var table = document.getElementById('ContentTable');
+  table.innerHTML = '';
 }
 function displayCalculateStuff() {}
 function handleAvrageArivalClick() {
