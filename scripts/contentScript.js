@@ -5,6 +5,7 @@ const headSection = document.createElement('section');
 const buttonSection = document.createElement('section');
 const btn_avrageArival = document.createElement('button');
 const btn_toggleEdit = document.createElement('button');
+const btn_calculate = document.createElement('button');
 
 const tableSection = document.createElement('section');
 const table = document.createElement('table');
@@ -19,19 +20,37 @@ function initPopup() {
     headSection.id = "popup_header";
 
     buttonSection.classList.add("section");
+    buttonSection.classList.add("tab");
 
     tableSection.classList.add("section");
 
-    btn_avrageArival.textContent = 'Avrage arival this Month';
+    btn_avrageArival.textContent = 'Arrival';
+    btn_avrageArival.id = 1;
     btn_avrageArival.classList.add("btn");
-    btn_avrageArival.addEventListener('click', handleAvrageArivalClick);
+    btn_avrageArival.classList.add("tablinks");
+    btn_avrageArival.addEventListener('click', function() {
+        openTab(1);
+    });
 
-    btn_toggleEdit.textContent = 'Toggle editeble';
+    btn_toggleEdit.textContent = 'Editable';
+    btn_toggleEdit.id = 2;
     btn_toggleEdit.classList.add("btn");
-    btn_toggleEdit.addEventListener('click', handleToggleEditClick);
+    btn_toggleEdit.classList.add("tablinks");
+    btn_toggleEdit.addEventListener('click', function() {
+        openTab(2);
+    });
+
+    btn_calculate.textContent = "Calculate";
+    btn_calculate.id = 3;
+    btn_calculate.classList.add("btn");
+    btn_calculate.classList.add("tablinks");
+    btn_calculate.addEventListener('click', function() {
+        openTab(3);
+    });
 
     buttonSection.appendChild(btn_avrageArival);
     buttonSection.appendChild(btn_toggleEdit);
+    buttonSection.appendChild(btn_calculate);
 
     tableSection.appendChild(table);
 
@@ -42,16 +61,39 @@ function initPopup() {
     document.body.appendChild(popup);
 }
 
+function openTab(tabID){
+  var tablinks = document.getElementsByClassName("tablinks");
+  for (i = 0; i < tablinks.length; i++) {
+    tablinks[i].className = tablinks[i].className.replace(" active", "");
+  }
+  var currentTab = document.getElementById(tabID);
+  console.log(currentTab, tabID);
+  currentTab.classList.add("active");
+  switch(tabID){
+    case 1:
+        handleAvrageArivalClick();
+        break;
+    case 2:
+        handleToggleEditClick();
+        break;
+    case 3:
+        displayCalculateStuff();
+    break;
+  }
+}
+function displayCalculateStuff(){
+
+}
 function handleAvrageArivalClick() {
     var avrageArival = getAvrageArival();
     displayAvrageArival(avrageArival);
 }
 function handleToggleEditClick() {
-    if (btn_toggleEdit.style.backgroundColor == "blue") {
-        btn_toggleEdit.style.backgroundColor = "red";
-    } else {
-        btn_toggleEdit.style.backgroundColor = "blue";
-    }
+   // if (btn_toggleEdit.style.backgroundColor == "blue") {
+     //   btn_toggleEdit.style.backgroundColor = "red";
+    //} else {
+      //  btn_toggleEdit.style.backgroundColor = "blue";
+    //}
     toggleContentEditableOfArivalTimes();
 }
 
