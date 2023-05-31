@@ -25,9 +25,9 @@
     margin-right: 5px;
     padding: 8px 16px;
     border: none;
-    border-radius: 4px;
     cursor: pointer;
     color: #fff;
+    border-radius: 4px;
     background-color: #555;
 }
 
@@ -39,4 +39,11 @@
     border: none;
     outline: none;
     cursor: pointer;
+}
+.tab button:hover {
+    background-color: #2d2e53;
+}
+.tab button.active {
+    background-color: #7caffc;
+    color: black;
 }
