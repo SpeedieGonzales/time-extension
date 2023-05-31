@@ -1,3 +1,4 @@
+const btn_open = document.createElement("button");
 const popup = document.createElement("div");
 
 const headSection = document.createElement('section');
@@ -16,10 +17,17 @@ openPopup();
 dragElement(popup);
 
 function initPopup() {
-    // Create the popup element
+    btn_open.classList.add("btn");
+    btn_open.classList.add("blank");
+    btn_open.classList.add("position-fixed");
+    btn_open.style.backgroundImage = `url('${chrome.runtime.getURL("img/open.png")}')`;
+    btn_open.addEventListener("click", showPopup);
+
     popup.id = "popup";
+    popup.classList.add("position-fixed")
 
     headSection.id = "popup_header";
+    headSection.style.backgroundImage = `url('${chrome.runtime.getURL("img/icon/icon16.png")}')`;
 
     btn_close.classList.add("btn");
     btn_close.classList.add("blank");
@@ -79,13 +87,19 @@ function initPopup() {
 
 function openPopup() {
     document.body.appendChild(popup);
+    document.body.appendChild(btn_open);
+    showPopup();
 }
 function showPopup() {
-    popup.style.visibility = "true";
+    popup.style.display = "block";
+    btn_open.style.display = "none";
 }
 
-function handleCloseClick() {
-    popup.style.visibility = "false";
+function handleCloseClick(element, event) {
+    console.debug(element);
+    console.debug(event);
+    popup.style.display = "none";
+    btn_open.style.display = "block";
 }
 
 function openTab(tabID) {
@@ -104,11 +118,6 @@ function handleAvrageArivalClick() {
     displayAvrageArival(avrageArival);
 }
 function handleToggleEditClick() {
-    // if (btn_toggleEdit.style.backgroundColor == "blue") {
-    //   btn_toggleEdit.style.backgroundColor = "red";
-    //} else {
-    //  btn_toggleEdit.style.backgroundColor = "blue";
-    //}
     toggleContentEditableOfArivalTimes();
 }
 
@@ -137,8 +146,10 @@ function toggleContentEditableOfArivalTimes() {
     elements.forEach(function (element) {
         if (element.contentEditable == "true") {
             element.contentEditable = "false";
+            element.style.removeProperty("background-color");
         } else {
             element.contentEditable = "true";
+            element.style.backgroundColor = "yellow";
         }
     });
 }

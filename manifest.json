@@ -25,7 +25,8 @@
         {
             "resources": [
                 "img/icon/icon16.png",
-                "img/close.png"
+                "img/close.png",
+                "img/open.png"
             ],
             "matches": [
                 "https://itenax.tachoplus.com:8080/*"

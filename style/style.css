@@ -1,4 +1,4 @@
-#popup {
+.position-fixed {
     position: fixed;
     top: 20px;
     right: 20px;
@@ -15,6 +15,10 @@
     background-color: #D3D3D3;
     cursor: move;
     direction: rtl;
+    background-repeat: no-repeat;
+    background-size: 15px 15px;
+    background-position-x: 5px;
+    background-position-y: center;
 }
 
 .section {
