@@ -112,7 +112,6 @@ function openTab(tabID) {
     var currentTabByID = document.getElementById(tabID);
     console.log(currentTab)
     if(currentTab.id != tabID || currentTab.length == 0){
-        var table = document.getElementById('ContentTable');
         table.innerHTML = '';
         currentTab = currentTabByID;
     }
