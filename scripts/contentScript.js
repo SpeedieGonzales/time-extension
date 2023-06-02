@@ -12,6 +12,8 @@ const btn_calculate = document.createElement("button");
 const tableSection = document.createElement("section");
 const table = document.createElement("table");
 
+var currentTab = "";
+
 initPopup();
 openPopup();
 dragElement(popup);
@@ -107,10 +109,14 @@ function openTab(tabID) {
     Array.from(tablinks).forEach(function (tablink) {
         tablink.className = tablink.className.replace(" active", "");
     });
-    var currentTab = document.getElementById(tabID);
+    var currentTabByID = document.getElementById(tabID);
+    console.log(currentTab)
+    if(currentTab.id != tabID || currentTab.length == 0){
+        var table = document.getElementById('ContentTable');
+        table.innerHTML = '';
+        currentTab = currentTabByID;
+    }
     currentTab.classList.add("active");
-    var table = document.getElementById('ContentTable');
-    table.innerHTML = '';
 }
 function displayCalculateStuff() { }
 function handleAvrageArivalClick() {
