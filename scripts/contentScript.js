@@ -122,7 +122,7 @@ function openTab(tabID) {
 }
 function displayCalculateStuff() {
   const btn_calculateMonth = document.createElement("button");
-  btn_calculateMonth.textContent = "Calculate this Month";
+  btn_calculateMonth.textContent = "Overtime Month";
   btn_calculateMonth.classList.add("btn");
   btn_calculateMonth.addEventListener("click", displayMonthCalculate);
 
@@ -137,7 +137,7 @@ function displayCalculateStuff() {
   input_calculateEnd.max = 31;
 
   const btn_calculatePeriod = document.createElement("button");
-  btn_calculatePeriod.textContent = "Calculate this Period";
+  btn_calculatePeriod.textContent = "Overtime Period";
   btn_calculatePeriod.classList.add("btn");
   btn_calculatePeriod.addEventListener("click", () => {
     displayPeriodCalculate(
@@ -189,6 +189,9 @@ function displayMonthCalculate() {
 function displayPeriodCalculate(begin, end) {
   var overtime = calculateOvertimeByPeriod(begin, end);
   const row = document.createElement("tr");
+  var month = document.querySelector(
+    'th[data-r="0"][data-c="1"][class="td_blue "]'
+  ).textContent;
   const labelCell = document.createElement("td");
   if (parseInt(begin) < 10 && !begin.startsWith("0")) {
     begin = "0" + begin;
@@ -197,7 +200,7 @@ function displayPeriodCalculate(begin, end) {
     end = "0" + end;
   }
   labelCell.innerHTML =
-    "Overtime in Range <strong>" + begin + "- " + end + "</strong>";
+    "Overtime from <strong>" + begin + " - " + end + ". "+month+"</strong>";
   const timeCell = document.createElement("td");
   timeCell.style.textAlign = "right";
   timeCell.textContent = overtime;
