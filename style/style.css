@@ -65,6 +65,7 @@
 }
 .div3 {
   grid-area: 2 / 2;
+  margin-bottom: 5px;
 }
 .table-section {
   height: 100%;
