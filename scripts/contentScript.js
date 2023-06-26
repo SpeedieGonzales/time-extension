@@ -141,8 +141,8 @@ function displayCalculateStuff() {
   btn_calculatePeriod.classList.add("btn");
   btn_calculatePeriod.addEventListener("click", () => {
     displayPeriodCalculate(
-      input_calculateBegin.textContent,
-      input_calculateEnd.textContent
+      input_calculateBegin.value,
+      input_calculateEnd.value
     );
   });
   const betweenSymbol = document.createTextNode("-");
@@ -170,7 +170,7 @@ function displayCalculateStuff() {
   tableSection.appendChild(table);
 }
 function displayMonthCalculate() {
-  var overtime = calculateOvertime();
+  var overtime = calculateOvertimeForMonth();
   var month = document.querySelector(
     'th[data-r="0"][data-c="1"][class="td_blue "]'
   ).textContent;
@@ -186,7 +186,26 @@ function displayMonthCalculate() {
 
   table.appendChild(row);
 }
-function displayPeriodCalculate(begin, end) {}
+function displayPeriodCalculate(begin, end) {
+  var overtime = calculateOvertimeByPeriod(begin, end);
+  const row = document.createElement("tr");
+  const labelCell = document.createElement("td");
+  if (parseInt(begin) < 10 && !begin.startsWith("0")) {
+    begin = "0" + begin;
+  }
+  if (parseInt(end) < 10 && !end.startsWith("0")) {
+    end = "0" + end;
+  }
+  labelCell.innerHTML =
+    "Overtime in Range <strong>" + begin + "- " + end + "</strong>";
+  const timeCell = document.createElement("td");
+  timeCell.style.textAlign = "right";
+  timeCell.textContent = overtime;
+  row.appendChild(labelCell);
+  row.appendChild(timeCell);
+
+  table.appendChild(row);
+}
 function handleAvrageArivalClick() {
   var avrageArival = getAvrageArival();
   displayAvrageArival(avrageArival);
