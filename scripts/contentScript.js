@@ -1,7 +1,7 @@
 const btn_open = document.createElement("button");
 const popup = document.createElement("div");
 
-const headSection = document.createElement('section');
+const headSection = document.createElement("section");
 const btn_close = document.createElement("button");
 
 const buttonSection = document.createElement("section");
@@ -19,168 +19,237 @@ openPopup();
 dragElement(popup);
 
 function initPopup() {
-    btn_open.classList.add("btn");
-    btn_open.classList.add("blank");
-    btn_open.classList.add("position-fixed");
-    btn_open.style.backgroundImage = `url('${chrome.runtime.getURL("img/open.png")}')`;
-    btn_open.addEventListener("click", showPopup);
+  btn_open.classList.add("btn");
+  btn_open.classList.add("blank");
+  btn_open.classList.add("position-fixed");
+  btn_open.style.backgroundImage = `url('${chrome.runtime.getURL(
+    "img/open.png"
+  )}')`;
+  btn_open.addEventListener("click", showPopup);
 
-    popup.id = "popup";
-    popup.classList.add("position-fixed")
+  popup.id = "popup";
+  popup.classList.add("position-fixed");
 
-    headSection.id = "popup_header";
-    headSection.style.backgroundImage = `url('${chrome.runtime.getURL("img/icon/icon16.png")}')`;
+  headSection.id = "popup_header";
+  headSection.style.backgroundImage = `url('${chrome.runtime.getURL(
+    "img/icon/icon16.png"
+  )}')`;
 
-    btn_close.classList.add("btn");
-    btn_close.classList.add("blank");
-    btn_close.style.backgroundImage = `url('${chrome.runtime.getURL("img/close.png")}')`;
-    btn_close.addEventListener('click', handleCloseClick);
+  btn_close.classList.add("btn");
+  btn_close.classList.add("blank");
+  btn_close.style.backgroundImage = `url('${chrome.runtime.getURL(
+    "img/close.png"
+  )}')`;
+  btn_close.addEventListener("click", handleCloseClick);
 
-    buttonSection.classList.add("section");
-    buttonSection.classList.add("tab");
+  buttonSection.classList.add("section");
+  buttonSection.classList.add("tab");
 
-    tableSection.classList.add("section");
+  tableSection.classList.add("section", "table-section");
 
-    table.id = "ContentTable";
+  table.id = "ContentTable";
 
-    btn_avrageArival.textContent = "Arrival";
-    btn_avrageArival.id = 1;
-    btn_avrageArival.classList.add("btn");
-    btn_avrageArival.classList.add("tablinks");
-    btn_avrageArival.addEventListener("click", function () {
-        openTab(1);
-    });
-    btn_avrageArival.addEventListener("click", handleAvrageArivalClick);
+  btn_avrageArival.textContent = "Arrival";
+  btn_avrageArival.id = 1;
+  btn_avrageArival.classList.add("btn");
+  btn_avrageArival.classList.add("tablinks");
+  btn_avrageArival.addEventListener("click", function () {
+    openTab(1);
+  });
+  btn_avrageArival.addEventListener("click", handleAvrageArivalClick);
 
+  headSection.appendChild(btn_close);
 
+  buttonSection.appendChild(btn_avrageArival);
+  buttonSection.appendChild(btn_toggleEdit);
+  btn_toggleEdit.textContent = "Editable";
+  btn_toggleEdit.id = 2;
+  btn_toggleEdit.classList.add("btn");
+  btn_toggleEdit.classList.add("tablinks");
+  btn_toggleEdit.addEventListener("click", function () {
+    openTab(2);
+  });
+  btn_toggleEdit.addEventListener("click", handleToggleEditClick);
 
-    headSection.appendChild(btn_close);
+  btn_calculate.textContent = "Calculator";
+  btn_calculate.id = 3;
+  btn_calculate.classList.add("btn");
+  btn_calculate.classList.add("tablinks");
+  btn_calculate.addEventListener("click", function () {
+    openTab(3);
+  });
+  btn_calculate.addEventListener("click", displayCalculateStuff);
 
-    buttonSection.appendChild(btn_avrageArival);
-    buttonSection.appendChild(btn_toggleEdit);
-    btn_toggleEdit.textContent = "Editable";
-    btn_toggleEdit.id = 2;
-    btn_toggleEdit.classList.add("btn");
-    btn_toggleEdit.classList.add("tablinks");
-    btn_toggleEdit.addEventListener("click", function () {
-        openTab(2);
-    });
-    btn_toggleEdit.addEventListener("click", handleToggleEditClick);
+  buttonSection.appendChild(btn_avrageArival);
+  buttonSection.appendChild(btn_toggleEdit);
+  buttonSection.appendChild(btn_calculate);
 
-    btn_calculate.textContent = "Calculate";
-    btn_calculate.id = 3;
-    btn_calculate.classList.add("btn");
-    btn_calculate.classList.add("tablinks");
-    btn_calculate.addEventListener("click", function () {
-        openTab(3);
-    });
-    btn_calculate.addEventListener("click", displayCalculateStuff);
+  tableSection.appendChild(table);
 
-    buttonSection.appendChild(btn_avrageArival);
-    buttonSection.appendChild(btn_toggleEdit);
-    buttonSection.appendChild(btn_calculate);
-
-    tableSection.appendChild(table);
-
-    popup.appendChild(headSection);
-    popup.appendChild(buttonSection);
-    popup.appendChild(tableSection);
+  popup.appendChild(headSection);
+  popup.appendChild(buttonSection);
+  popup.appendChild(tableSection);
 }
 
 function openPopup() {
-    document.body.appendChild(popup);
-    document.body.appendChild(btn_open);
-    showPopup();
+  document.body.appendChild(popup);
+  document.body.appendChild(btn_open);
+  showPopup();
 }
 function showPopup() {
-    popup.style.display = "block";
-    btn_open.style.display = "none";
+  popup.style.display = "block";
+  btn_open.style.display = "none";
 }
 
 function handleCloseClick(element, event) {
-    console.debug(element);
-    console.debug(event);
-    popup.style.display = "none";
-    btn_open.style.display = "block";
+  console.debug(element);
+  console.debug(event);
+  popup.style.display = "none";
+  btn_open.style.display = "block";
 }
 
 function openTab(tabID) {
-    var tablinks = document.getElementsByClassName("tablinks");
-    Array.from(tablinks).forEach(function (tablink) {
-        tablink.className = tablink.className.replace(" active", "");
-    });
-    var currentTabByID = document.getElementById(tabID);
-    console.log(currentTab)
-    if(currentTab.id != tabID || currentTab.length == 0){
-        table.innerHTML = '';
-        currentTab = currentTabByID;
-    }
-    currentTab.classList.add("active");
+  var tablinks = document.getElementsByClassName("tablinks");
+  Array.from(tablinks).forEach(function (tablink) {
+    tablink.className = tablink.className.replace(" active", "");
+  });
+  var currentTabByID = document.getElementById(tabID);
+  if (currentTab.id != tabID || currentTab.length == 0) {
+    table.innerHTML = "";
+    currentTab = currentTabByID;
+  }
+  currentTab.classList.add("active");
 }
-function displayCalculateStuff() { }
+function displayCalculateStuff() {
+  const btn_calculateMonth = document.createElement("button");
+  btn_calculateMonth.textContent = "Calculate this Month";
+  btn_calculateMonth.classList.add("btn");
+  btn_calculateMonth.addEventListener("click", displayMonthCalculate);
+
+  const input_calculateBegin = document.createElement("input");
+  input_calculateBegin.type = "number";
+  input_calculateBegin.min = 0;
+  input_calculateBegin.max = 31;
+
+  const input_calculateEnd = document.createElement("input");
+  input_calculateEnd.type = "number";
+  input_calculateEnd.min = 0;
+  input_calculateEnd.max = 31;
+
+  const btn_calculatePeriod = document.createElement("button");
+  btn_calculatePeriod.textContent = "Calculate this Period";
+  btn_calculatePeriod.classList.add("btn");
+  btn_calculatePeriod.addEventListener("click", () => {
+    displayPeriodCalculate(
+      input_calculateBegin.textContent,
+      input_calculateEnd.textContent
+    );
+  });
+  const betweenSymbol = document.createTextNode("-");
+  const div1 = document.createElement("aside");
+  div1.classList.add("div1");
+  input_calculateBegin.classList.add("normal_input");
+  input_calculateEnd.classList.add("normal_input");
+  div1.appendChild(input_calculateBegin);
+  div1.appendChild(betweenSymbol);
+  div1.appendChild(input_calculateEnd);
+  const div2 = document.createElement("aside");
+  div2.classList.add("div2");
+  div2.appendChild(btn_calculatePeriod);
+  const div3 = document.createElement("aside");
+  div3.classList.add("div3");
+  div3.appendChild(btn_calculateMonth);
+  const parentdiv = document.createElement("aside");
+  parentdiv.classList.add("parent");
+  parentdiv.appendChild(div1);
+  parentdiv.appendChild(div2);
+  parentdiv.appendChild(div3);
+
+  tableSection.removeChild(table);
+  tableSection.appendChild(parentdiv);
+  tableSection.appendChild(table);
+}
+function displayMonthCalculate() {
+  var overtime = calculateOvertime();
+  var month = document.querySelector(
+    'th[data-r="0"][data-c="1"][class="td_blue "]'
+  ).textContent;
+  const row = document.createElement("tr");
+  const labelCell = document.createElement("td");
+  labelCell.innerHTML = "Overtime in <strong>" + month + "</strong>";
+  const timeCell = document.createElement("td");
+  timeCell.style.textAlign = "right";
+  timeCell.textContent = overtime;
+
+  row.appendChild(labelCell);
+  row.appendChild(timeCell);
+
+  table.appendChild(row);
+}
+function displayPeriodCalculate(begin, end) {}
 function handleAvrageArivalClick() {
-    var avrageArival = getAvrageArival();
-    displayAvrageArival(avrageArival);
+  var avrageArival = getAvrageArival();
+  displayAvrageArival(avrageArival);
 }
 function handleToggleEditClick() {
-    toggleContentEditableOfArivalTimes();
+  toggleContentEditableOfArivalTimes();
 }
 
 function displayAvrageArival(avrageArival) {
-    var month = document.querySelector(
-        'th[data-r="0"][data-c="1"][class="td_blue "]'
-    ).textContent;
+  var month = document.querySelector(
+    'th[data-r="0"][data-c="1"][class="td_blue "]'
+  ).textContent;
 
-    const row = document.createElement("tr");
+  const row = document.createElement("tr");
 
-    const labelCell = document.createElement("td");
-    labelCell.innerHTML = "Average Arival in <strong>" + month + "</strong>";
-    const timeCell = document.createElement("td");
-    timeCell.style.textAlign = "right";
-    timeCell.textContent = avrageArival;
+  const labelCell = document.createElement("td");
+  labelCell.innerHTML = "Average Arival in <strong>" + month + "</strong>";
+  const timeCell = document.createElement("td");
+  timeCell.style.textAlign = "right";
+  timeCell.textContent = avrageArival;
 
-    row.appendChild(labelCell);
-    row.appendChild(timeCell);
+  row.appendChild(labelCell);
+  row.appendChild(timeCell);
 
-    table.appendChild(row);
+  table.appendChild(row);
 }
 
 function toggleContentEditableOfArivalTimes() {
-    const elements = document.querySelectorAll('td[data-c="8"]:not(.td_green)');
+  const elements = document.querySelectorAll('td[data-c="8"]:not(.td_green)');
 
-    elements.forEach(function (element) {
-        if (element.contentEditable == "true") {
-            element.contentEditable = "false";
-            element.style.removeProperty("background-color");
-        } else {
-            element.contentEditable = "true";
-            element.style.backgroundColor = "yellow";
-        }
-    });
+  elements.forEach(function (element) {
+    if (element.contentEditable == "true") {
+      element.contentEditable = "false";
+      element.style.removeProperty("background-color");
+    } else {
+      element.contentEditable = "true";
+      element.style.backgroundColor = "yellow";
+    }
+  });
 }
 
 function getAvrageArival() {
-    const elements = document.querySelectorAll('td[data-c="8"]');
-    var list = [];
-    elements.forEach(function (element) {
-        if (element.textContent != "") {
-            var time = element.textContent;
-            const [hours, minutes] = time.split(":");
-            var houresAndMinutes = Number(hours) + Number(minutes) / 60;
-            list.push(houresAndMinutes);
-        }
-    });
-
-    var allTimes = 0;
-    list.forEach(function (time) {
-        allTimes += time;
-    });
-    var avrageTime = allTimes / list.length;
-    var hours = Math.floor(avrageTime);
-    var minutes = String(Math.floor((avrageTime - hours) * 60));
-    if (minutes.length <= 1) {
-        minutes = "0" + minutes;
+  const elements = document.querySelectorAll('td[data-c="8"]');
+  var list = [];
+  elements.forEach(function (element) {
+    if (element.textContent != "") {
+      var time = element.textContent;
+      const [hours, minutes] = time.split(":");
+      var houresAndMinutes = Number(hours) + Number(minutes) / 60;
+      list.push(houresAndMinutes);
     }
-    var avrageTimeStr = " " + String(hours) + ":" + minutes;
-    return avrageTimeStr;
+  });
+
+  var allTimes = 0;
+  list.forEach(function (time) {
+    allTimes += time;
+  });
+  var avrageTime = allTimes / list.length;
+  var hours = Math.floor(avrageTime);
+  var minutes = String(Math.floor((avrageTime - hours) * 60));
+  if (minutes.length <= 1) {
+    minutes = "0" + minutes;
+  }
+  var avrageTimeStr = " " + String(hours) + ":" + minutes;
+  return avrageTimeStr;
 }

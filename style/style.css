@@ -1,53 +1,81 @@
 .position-fixed {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background-color: #fff;
-    padding-bottom: 10px;
-    border: 1px solid #D3D3D3;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    border-radius: 10px;
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background-color: #fff;
+  padding-bottom: 10px;
+  border: 1px solid #d3d3d3;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 
 #popup_header {
-    height: 25px;
-    width: 100%;
-    background-color: #D3D3D3;
-    cursor: move;
-    direction: rtl;
-    background-repeat: no-repeat;
-    background-size: 15px 15px;
-    background-position-x: 5px;
-    background-position-y: center;
+  height: 25px;
+  width: 100%;
+  background-color: #d3d3d3;
+  cursor: move;
+  direction: rtl;
+  background-repeat: no-repeat;
+  background-size: 15px 15px;
+  background-position-x: 5px;
+  background-position-y: center;
 }
 
 .section {
-    margin: 5px;
+  margin: 5px;
 }
 
 .btn {
-    margin-right: 5px;
-    padding: 8px 16px;
-    border: none;
-    cursor: pointer;
-    color: #fff;
-    border-radius: 4px;
-    background-color: #555;
+  margin-right: 5px;
+  padding: 8px 16px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  border-radius: 4px;
+  background-color: #555;
 }
 
 .btn.blank {
-    width: 20px;
-    height: 20px;
-    padding: 0;
-    background-color: transparent;
-    border: none;
-    outline: none;
-    cursor: pointer;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  cursor: pointer;
 }
 .tab button:hover {
-    background-color: #2d2e53;
+  background-color: #2d2e53;
 }
 .tab button.active {
-    background-color: #7caffc;
-    color: black;
+  background-color: #7caffc;
+  color: black;
+}
+.parent {
+  display: grid;
+  grid-column-gap: 10px;
+  grid-row-gap: 5px;
+}
+
+.div1 {
+  grid-area: 1 / 1;
+}
+.div2 {
+  grid-area: 1 / 2;
+}
+.div3 {
+  grid-area: 2 / 2;
+}
+.table-section {
+  height: 100%;
+}
+.normal_input{
+    position: inherit;
+    margin: 0px 0px 0px 0px;
+    padding: 1px 2px;
+    font-family: arial;
+    cursor: default;
+    border-style: inset;
+    display: inline;
+    overflow: hidden;
 }
