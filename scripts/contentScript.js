@@ -8,7 +8,6 @@ const buttonSection = document.createElement("section");
 const btn_avrageArival = document.createElement("button");
 const btn_toggleEdit = document.createElement("button");
 const btn_calculate = document.createElement("button");
-
 const tableSection = document.createElement("section");
 const table = document.createElement("table");
 
@@ -102,7 +101,6 @@ function initPopup() {
   popup.appendChild(tableSection);
 
   initCalculateStuff();
-
 }
 
 function openPopup() {
@@ -139,6 +137,25 @@ function openTab(tabID) {
   }
   currentTab.classList.add("active");
 }
+function displayInTable(Value,type, IsPeriod, begin = 0, end = 0){
+  var month = document.querySelector(
+    'th[data-r="0"][data-c="1"][class="td_blue "]'
+  ).textContent;
+  const row = document.createElement("tr");
+  const labelCell = document.createElement("td");
+  if(IsPeriod){
+    labelCell.innerHTML = type+" from <strong>"+begin+" - "+end+"" + month + "</strong>";
+  }else{
+    labelCell.innerHTML = type+" in <strong>" + month + "</strong>";
+  }
+  const timeCell = document.createElement("td");
+  timeCell.style.textAlign = "right";
+  timeCell.textContent = Value;
+
+  row.appendChild(labelCell);
+  row.appendChild(timeCell);
+  table.appendChild(row);
+}
 function initCalculateStuff() {
   btn_calculateMonth.textContent = "Month";
   btn_calculateMonth.classList.add("btn");
@@ -162,7 +179,7 @@ function initCalculateStuff() {
   });
   btn_countAbsences.textContent = "Count Absences";
   btn_countAbsences.classList.add("btn");
-  btn_countAbsences.addEventListener("click", displayAmountAbsences);
+  btn_countAbsences.addEventListener("click", amountOfAbsences);
   betweenSymbol.innerText = "-";
   betweenSymbol.style.padding = "5px";
   div1.classList.add("div1");
@@ -183,88 +200,26 @@ function initCalculateStuff() {
   parentdiv.appendChild(div3);
   parentdiv.appendChild(div4);
 }
-function displayAmountAbsences(){
-  var absencetime = countAbsences();
-  var month = document.querySelector(
-    'th[data-r="0"][data-c="1"][class="td_blue "]'
-  ).textContent;
-  const row = document.createElement("tr");
-  const labelCell = document.createElement("td");
-  labelCell.innerHTML = "Absencetime in <strong>" + month + "</strong>";
-  const timeCell = document.createElement("td");
-  timeCell.style.textAlign = "right";
-  timeCell.textContent = absencetime;
-
-  row.appendChild(labelCell);
-  row.appendChild(timeCell);
-
-  table.appendChild(row);
+function amountOfAbsences(){
+  displayInTable(countAbsences(),"Absencetime", false);
 }
 function displayMonthCalculate() {
-  var overtime = calculateOvertimeForMonth();
-  var month = document.querySelector(
-    'th[data-r="0"][data-c="1"][class="td_blue "]'
-  ).textContent;
-  const row = document.createElement("tr");
-  const labelCell = document.createElement("td");
-  labelCell.innerHTML = "Overtime in <strong>" + month + "</strong>";
-  const timeCell = document.createElement("td");
-  timeCell.style.textAlign = "right";
-  timeCell.textContent = overtime;
-
-  row.appendChild(labelCell);
-  row.appendChild(timeCell);
-
-  table.appendChild(row);
+  displayInTable(calculateOvertimeForMonth(),"Overtime", false);
 }
 function displayPeriodCalculate(begin, end) {
-  var overtime = calculateOvertimeByPeriod(begin, end);
-  const row = document.createElement("tr");
-  var month = document.querySelector(
-    'th[data-r="0"][data-c="1"][class="td_blue "]'
-  ).textContent;
-  const labelCell = document.createElement("td");
   if (parseInt(begin) < 10 && !begin.startsWith("0")) {
     begin = "0" + begin;
   }
   if (parseInt(end) < 10 && !end.startsWith("0")) {
     end = "0" + end;
   }
-  labelCell.innerHTML =
-    "Overtime from <strong>" + begin + " - " + end + ". "+month+"</strong>";
-  const timeCell = document.createElement("td");
-  timeCell.style.textAlign = "right";
-  timeCell.textContent = overtime;
-  row.appendChild(labelCell);
-  row.appendChild(timeCell);
-
-  table.appendChild(row);
+  displayInTable(calculateOvertimeByPeriod(begin, end),"Overtime", true, begin, end);
 }
 function handleAvrageArivalClick() {
-  var avrageArival = getAvrageArival();
-  displayAvrageArival(avrageArival);
+  displayInTable(getAvrageArival(),"Arival", false);
 }
 function handleToggleEditClick() {
   toggleContentEditableOfArivalTimes();
-}
-
-function displayAvrageArival(avrageArival) {
-  var month = document.querySelector(
-    'th[data-r="0"][data-c="1"][class="td_blue "]'
-  ).textContent;
-
-  const row = document.createElement("tr");
-
-  const labelCell = document.createElement("td");
-  labelCell.innerHTML = "Average Arival in <strong>" + month + "</strong>";
-  const timeCell = document.createElement("td");
-  timeCell.style.textAlign = "right";
-  timeCell.textContent = avrageArival;
-
-  row.appendChild(labelCell);
-  row.appendChild(timeCell);
-
-  table.appendChild(row);
 }
 
 function toggleContentEditableOfArivalTimes() {
@@ -281,28 +236,4 @@ function toggleContentEditableOfArivalTimes() {
   });
 }
 
-function getAvrageArival() {
-  const elements = document.querySelectorAll('td[data-c="8"]');
-  var list = [];
-  elements.forEach(function (element) {
-    if (element.textContent != "") {
-      var time = element.textContent;
-      const [hours, minutes] = time.split(":");
-      var houresAndMinutes = Number(hours) + Number(minutes) / 60;
-      list.push(houresAndMinutes);
-    }
-  });
 
-  var allTimes = 0;
-  list.forEach(function (time) {
-    allTimes += time;
-  });
-  var avrageTime = allTimes / list.length;
-  var hours = Math.floor(avrageTime);
-  var minutes = String(Math.floor((avrageTime - hours) * 60));
-  if (minutes.length <= 1) {
-    minutes = "0" + minutes;
-  }
-  var avrageTimeStr = " " + String(hours) + ":" + minutes;
-  return avrageTimeStr;
-}
