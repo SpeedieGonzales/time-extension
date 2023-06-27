@@ -6,7 +6,6 @@ const btn_close = document.createElement("button");
 
 const buttonSection = document.createElement("section");
 
-const btn_goHomeTime = document.createElement("button");
 const btn_toggleEdit = document.createElement("button");
 const tableSection = document.createElement("section");
 const table = document.createElement("table");
@@ -107,18 +106,19 @@ function initDropdown() {
   new DropDownView(
     "Absence",
     amountOfAbsences,
-    displayPeriodCalculate,
+    periodOfAbsences,
     content3_value
   );
   new DropDownView(
     "Arrival",
     handleAvrageArivalClick,
-    displayPeriodCalculate,
+    periodAverageArival,
     content2_value
   );
+  /*TODO: PeriodCalculate & Minutes (evtl ebenfalls minus zeit) -> In Zukunft auch möglich bis ende monat berechnen wie viel überzeit pro Tag gemacht werden muss*/
   new DropDownView(
     "GoHomeTime",
-    handleAvrageArivalClick,
+    calculateEndtime,
     displayPeriodCalculate,
     content4_value, true
   );
@@ -161,29 +161,6 @@ function initDropdown() {
   tableSection.appendChild(content4);
 }
 
-function initGoHomeView(){
-  var goHomeTime = document.createElement("h3");
-  goHomeTime.textContent = "00:00";
-  goHomeTime.style.textAlign = "center";
-  input_overtime.value = 0;
-  input_overtime.type = "number";
-  input_overtime.min = 0;
-  input_overtime.max = 31;
-  input_overtime.classList.add("normal_input");
-  btn_goHomeTime.textContent = "GoHomeTime";
-  btn_goHomeTime.classList.add("btn");
-  btn_goHomeTime.addEventListener("click", () => {
-    var time = calculateEndtime(
-      parseInt(input_overtime.value)
-    );
-    goHomeTime.textContent = time;
-  });
-  var ram = document.createElement("aside");
-  ram.appendChild(goHomeTime);
-  ram.appendChild(input_overtime);
-  ram.appendChild(btn_goHomeTime);
-  new DropDownView("GoHomeTime", ram, content4_value);
-}
 function openPopup() {
   document.body.appendChild(popup);
   document.body.appendChild(btn_open);
@@ -242,7 +219,10 @@ function displayInTable(Value, type, IsPeriod, begin = 0, end = 0) {
 }
 
 function amountOfAbsences() {
-  displayInTable(countAbsences(), "Absencetime", false);
+  displayInTable(countAbsences(false), "Absencetime", false);
+}
+function periodOfAbsences(begin, end){
+  displayInTable(countAbsences(true, begin, end), "Absencetime", false);
 }
 function displayMonthCalculate() {
   displayInTable(calculateOvertimeForMonth(), "Overtime", false);
@@ -263,7 +243,10 @@ function displayPeriodCalculate(begin, end) {
   );
 }
 function handleAvrageArivalClick() {
-  displayInTable(getAvrageArival(), "Arival", false);
+  displayInTable(getAvrageArival(false), "Arival", false);
+}
+function periodAverageArival(begin, end){
+  displayInTable(getAvrageArival(true, begin, end), "Arival", false);
 }
 function handleToggleEditClick() {
   toggleContentEditableOfArivalTimes();
