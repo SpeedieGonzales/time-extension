@@ -20,7 +20,29 @@ class DropDownView {
     var div4 = document.createElement("aside");
     div4.classList.add("div4");
     if (isHomeTime) {
-
+      var btn_goHomeTime = document.createElement("button");
+      var input_overtime = document.createElement("input");
+      var goHomeTime = document.createElement("h3");
+      var goHomeTimeValue = document.createElement("h3");
+      goHomeTimeValue.textContent = "00:00";
+      goHomeTimeValue.style.textAlign = "center";
+      goHomeTime.textContent = "Um ";
+      goHomeTime.style.textAlign = "center";
+      input_overtime.value = 0;
+      input_overtime.type = "number";
+      input_overtime.min = 0;
+      input_overtime.max = 8;
+      input_overtime.classList.add("normal_input");
+      btn_goHomeTime.textContent = "Overtime(Hours)";
+      btn_goHomeTime.classList.add("btn");
+      btn_goHomeTime.addEventListener("click", () => {
+        var time = btn_Month_Function(parseInt(input_overtime.value));
+        goHomeTimeValue.textContent = time;
+      });
+      div1.appendChild(goHomeTime);
+      div2.appendChild(goHomeTimeValue);
+      div3.appendChild(input_overtime);
+      div4.appendChild(btn_goHomeTime);
     } else {
       var input_calculateBegin = document.createElement("input");
       input_calculateBegin.type = "number";
@@ -61,7 +83,6 @@ class DropDownView {
     parent.appendChild(div2);
     parent.appendChild(div3);
     parent.appendChild(div4);
-
     legendElement.textContent = title;
     fieldsetElement.appendChild(legendElement);
     fieldsetElement.appendChild(parent);
