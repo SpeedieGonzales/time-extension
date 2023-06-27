@@ -78,3 +78,58 @@ function getAvrageArival() {
     var avrageTimeStr = " " + String(hours) + ":" + minutes;
     return avrageTimeStr;
   }
+
+
+  function getTodaysRowInt() {
+    var day = new Date().getDate();
+    var fields = document.querySelectorAll("td[data-c='0'][ondblclick]:not(.td_green)");
+    var value = -1;
+    fields.forEach(function (feld, index) {
+        if (index + 1 == day) {
+            value = feld.getAttribute("data-r");
+        }
+    });
+    return value;
+}
+function getTodaysTimeStamps() {
+    var todaysRow = getTodaysRowInt();
+    console.log(todaysRow);
+    var fields = document.querySelectorAll(`td[data-r='${todaysRow}'][data-c]`);
+    var array = Array.from(fields);
+    array.splice(0, 8);
+    var timeStamps = [];
+    array.forEach(function (element, index) {
+        if (element.textContent.length != 0) {
+            timeStamps.push(TimeParser.parseStringToInt(element.textContent));
+        }
+    });
+    return timeStamps;
+}
+function getTimesFromTimeStamp(stamps) {
+    var times = [];
+    for (var i = 0; i < stamps.length; i += 2) {
+        if (i + 1 >= stamps.length) {
+            continue;
+        }
+        var diff = stamps[i + 1] - stamps[i];
+        times.push(diff);
+    }
+    return times;
+}
+function calculateEndtime(overtime) {
+    var timeStamps = getTodaysTimeStamps();
+    var times = getTimesFromTimeStamp(timeStamps);
+    var endTime = 0;
+    let timeSum = 0;
+    times.forEach(time => {
+        timeSum += time;
+    })
+
+    var lastStamp = timeStamps[timeStamps.length - 1];
+    if (lastStamp < 12){
+        lastStamp = lastStamp + 0.5;
+    }
+    endTime = lastStamp + (8 + overtime - timeSum);
+
+    return TimeParser.parseIntToTime(endTime);
+}
