@@ -176,7 +176,7 @@ function initOvertimeView(){
       input_calculateEnd.value
     );
   });
-  betweenSymbol.innerText = "-";
+  betweenSymbol.innerText = "- ";
 
   var ram = document.createElement("aside");
   ram.appendChild(input_calculateBegin);
