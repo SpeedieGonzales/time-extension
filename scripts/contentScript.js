@@ -12,6 +12,18 @@ const btn_calculate = document.createElement("button");
 const tableSection = document.createElement("section");
 const table = document.createElement("table");
 
+const btn_calculateMonth = document.createElement("button");
+const input_calculateBegin = document.createElement("input");
+const input_calculateEnd = document.createElement("input");
+const btn_calculatePeriod = document.createElement("button");
+const btn_countAbsences = document.createElement("button");
+const betweenSymbol = document.createElement("span");
+const div1 = document.createElement("aside");
+const div2 = document.createElement("aside");
+const div3 = document.createElement("aside");
+const div4 = document.createElement("aside");
+const parentdiv = document.createElement("aside");
+
 var currentTab = "";
 
 initPopup();
@@ -78,7 +90,6 @@ function initPopup() {
   btn_calculate.addEventListener("click", function () {
     openTab(3);
   });
-  btn_calculate.addEventListener("click", displayCalculateStuff);
 
   buttonSection.appendChild(btn_avrageArival);
   buttonSection.appendChild(btn_toggleEdit);
@@ -89,6 +100,9 @@ function initPopup() {
   popup.appendChild(headSection);
   popup.appendChild(buttonSection);
   popup.appendChild(tableSection);
+
+  initCalculateStuff();
+
 }
 
 function openPopup() {
@@ -117,27 +131,28 @@ function openTab(tabID) {
   if (currentTab.id != tabID || currentTab.length == 0) {
     table.innerHTML = "";
     currentTab = currentTabByID;
+    tableSection.innerHTML = "";
+    if(tabID == 3){
+      tableSection.appendChild(parentdiv);
+    }
+    tableSection.appendChild(table);
   }
   currentTab.classList.add("active");
 }
-function displayCalculateStuff() {
-  const btn_calculateMonth = document.createElement("button");
-  btn_calculateMonth.textContent = "Calculate this Month";
+function initCalculateStuff() {
+  btn_calculateMonth.textContent = "Month";
   btn_calculateMonth.classList.add("btn");
   btn_calculateMonth.addEventListener("click", displayMonthCalculate);
 
-  const input_calculateBegin = document.createElement("input");
   input_calculateBegin.type = "number";
   input_calculateBegin.min = 0;
   input_calculateBegin.max = 31;
 
-  const input_calculateEnd = document.createElement("input");
   input_calculateEnd.type = "number";
   input_calculateEnd.min = 0;
   input_calculateEnd.max = 31;
 
-  const btn_calculatePeriod = document.createElement("button");
-  btn_calculatePeriod.textContent = "Calculate this Period";
+  btn_calculatePeriod.textContent = "Period";
   btn_calculatePeriod.classList.add("btn");
   btn_calculatePeriod.addEventListener("click", () => {
     displayPeriodCalculate(
@@ -145,39 +160,28 @@ function displayCalculateStuff() {
       input_calculateEnd.value
     );
   });
-
-  const btn_countAbsences = document.createElement("button");
   btn_countAbsences.textContent = "Count Absences";
   btn_countAbsences.classList.add("btn");
   btn_countAbsences.addEventListener("click", displayAmountAbsences);
-
-  const betweenSymbol = document.createTextNode("-");
-  const div1 = document.createElement("aside");
+  betweenSymbol.innerText = "-";
+  betweenSymbol.style.padding = "5px";
   div1.classList.add("div1");
   input_calculateBegin.classList.add("normal_input");
   input_calculateEnd.classList.add("normal_input");
   div1.appendChild(input_calculateBegin);
   div1.appendChild(betweenSymbol);
   div1.appendChild(input_calculateEnd);
-  const div2 = document.createElement("aside");
   div2.classList.add("div2");
   div2.appendChild(btn_calculatePeriod);
-  const div3 = document.createElement("aside");
   div3.classList.add("div3");
   div3.appendChild(btn_calculateMonth);
-  const div4 = document.createElement("aside");
   div4.classList.add("div4");
   div4.appendChild(btn_countAbsences);
-  const parentdiv = document.createElement("aside");
   parentdiv.classList.add("parent");
   parentdiv.appendChild(div1);
   parentdiv.appendChild(div2);
   parentdiv.appendChild(div3);
   parentdiv.appendChild(div4);
-
-  tableSection.removeChild(table);
-  tableSection.appendChild(parentdiv);
-  tableSection.appendChild(table);
 }
 function displayAmountAbsences(){
   var absencetime = countAbsences();
@@ -216,6 +220,9 @@ function displayMonthCalculate() {
 function displayPeriodCalculate(begin, end) {
   var overtime = calculateOvertimeByPeriod(begin, end);
   const row = document.createElement("tr");
+  var month = document.querySelector(
+    'th[data-r="0"][data-c="1"][class="td_blue "]'
+  ).textContent;
   const labelCell = document.createElement("td");
   if (parseInt(begin) < 10 && !begin.startsWith("0")) {
     begin = "0" + begin;
@@ -224,7 +231,7 @@ function displayPeriodCalculate(begin, end) {
     end = "0" + end;
   }
   labelCell.innerHTML =
-    "Overtime in Range <strong>" + begin + "- " + end + "</strong>";
+    "Overtime from <strong>" + begin + " - " + end + ". "+month+"</strong>";
   const timeCell = document.createElement("td");
   timeCell.style.textAlign = "right";
   timeCell.textContent = overtime;
