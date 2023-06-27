@@ -113,6 +113,7 @@ function initDropdown() {
   initArvivalView();
   initGoHomeView();
 
+  selectElement.classList.add("AsButtonDesign")
   selectElement.add(option1);
   selectElement.add(option2);
   selectElement.add(option3);

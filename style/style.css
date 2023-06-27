@@ -96,4 +96,9 @@
   opacity: 1;
   margin-bottom: 5px;
 }
-
+.AsButtonDesign{
+  color: white;
+  background-color: #555;
+  border-radius: 5px;
+  padding: 8px
+}
