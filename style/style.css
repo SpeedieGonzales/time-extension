@@ -88,12 +88,12 @@
 .content {
   display: none;
   transition: opacity 0.3s ease;
+  margin-bottom: 5px;
 }
 
 .content.active {
   display: block;
   opacity: 1;
-}
-.extraMargin{
   margin-bottom: 5px;
 }
+

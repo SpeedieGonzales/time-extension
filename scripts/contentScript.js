@@ -32,14 +32,10 @@ const content3_value = document.createElement("aside");
 const content4 = document.createElement("aside");
 const content4_value = document.createElement("aside");
 const selectElement = document.createElement("select");
-const fieldsetElement_1 = document.createElement("fieldset");
-const legendElement_1 = document.createElement("legend");
-const fieldsetElement_2 = document.createElement("fieldset");
-const legendElement_2 = document.createElement("legend");
-const fieldsetElement_3 = document.createElement("fieldset");
-const legendElement_3 = document.createElement("legend");
-const fieldsetElement_4 = document.createElement("fieldset");
-const legendElement_4 = document.createElement("legend");
+const option1 = document.createElement("option");
+const option2 = document.createElement("option");
+const option3 = document.createElement("option");
+const option4 = document.createElement("option");
 
 var currentTab = "";
 
@@ -102,19 +98,15 @@ function initPopup() {
 
 }
 function initDropdown() {
-  var option1 = document.createElement("option");
-  option1.text = "Overtime";
-  var option2 = document.createElement("option");
-  option2.text = "Arrival";
-  var option3 = document.createElement("option");
-  option3.text = "Absence";
-  var option4 = document.createElement("option");
-  option4.text = "GoHomeTime";
 
-  content1.classList.add("extraMargin");
-  content2.classList.add("extraMargin");
-  content3.classList.add("extraMargin");
-  content4.classList.add("extraMargin");
+  option1.text = "Overtime";
+  option1.id = "option1";
+  option2.text = "Arrival";
+  option2.id = "option2";
+  option3.text = "Absence";
+  option3.id = "option3";
+  option4.text = "GoHomeTime";
+  option4.id = "option4";
 
   initOvertimeView();
   initAbsenceView();
@@ -126,6 +118,7 @@ function initDropdown() {
   selectElement.add(option3);
   selectElement.add(option4);
   buttonSection.appendChild(selectElement);
+
   content1.id = "content1";
   content1.classList.add("content");
   content1.appendChild(content1_value);
@@ -138,28 +131,15 @@ function initDropdown() {
   content4.id = "content4";
   content4.classList.add("content");
   content4.appendChild(content4_value);
+
   var contentElements = document.getElementsByClassName("content");
   selectElement.addEventListener("change", function () {
     table.innerHTML = "";
     for (var i = 0; i < contentElements.length; i++) {
       contentElements[i].classList.remove("active");
     }
-    switch(selectElement.value){
-      case "Overtime":
-        content1.classList.add("active");
-        break;
-      case "Arrival":
-        content2.classList.add("active");
-        break;
-      case "Absence":
-        content3.classList.add("active");
-        break;
-      case "GoHomeTime":
-        content4.classList.add("active");
-        break;
-      default:
-        break;
-    }
+    var id = selectElement.selectedOptions[0].id.charAt(selectElement.selectedOptions[0].id.length - 1);
+    document.getElementById("content" + id).classList.add("active");
   });
   tableSection.appendChild(content1);
   tableSection.appendChild(content2);
@@ -170,10 +150,7 @@ function initGoHomeView(){
   btn_goHomeTime.textContent = "GoHomeTime";
   btn_goHomeTime.classList.add("btn");
   btn_goHomeTime.addEventListener("click", handleAvrageArivalClick);
-  legendElement_4.textContent = "GoHomeTime";
-  fieldsetElement_4.appendChild(legendElement_4)
-  fieldsetElement_4.appendChild(btn_goHomeTime);
-  content4_value.appendChild(fieldsetElement_4);
+  new DropDownView("GoHomeTime", btn_goHomeTime, content4_value);
 }
 function initOvertimeView(){
   btn_calculateMonth.textContent = "Month";
@@ -200,14 +177,14 @@ function initOvertimeView(){
   });
   betweenSymbol.innerText = "-";
 
-  legendElement_1.textContent = "Overtime";
-  fieldsetElement_1.appendChild(legendElement_1)
-  fieldsetElement_1.appendChild(input_calculateBegin);
-  fieldsetElement_1.appendChild(betweenSymbol);
-  fieldsetElement_1.appendChild(input_calculateEnd);
-  fieldsetElement_1.appendChild(btn_calculatePeriod);
-  fieldsetElement_1.appendChild(btn_calculateMonth);
-  content1_value.appendChild(fieldsetElement_1);
+  var ram = document.createElement("aside");
+  ram.appendChild(input_calculateBegin);
+  ram.appendChild(betweenSymbol);
+  ram.appendChild(input_calculateEnd);
+  ram.appendChild(btn_calculatePeriod);
+  ram.appendChild(btn_calculateMonth);
+
+  new DropDownView("Overtime", ram, content1_value)
 }
 function initArvivalView(){
   btn_avrageArival.textContent = "Arrival";
@@ -215,19 +192,15 @@ function initArvivalView(){
   btn_avrageArival.classList.add("btn");
   btn_avrageArival.classList.add("tablinks");
   btn_avrageArival.addEventListener("click", handleAvrageArivalClick);
-  legendElement_2.textContent = "Arrival";
-  fieldsetElement_2.appendChild(legendElement_2)
-  fieldsetElement_2.appendChild(btn_avrageArival);
-  content2_value.appendChild(fieldsetElement_2);
+
+  new DropDownView("Arrival", btn_avrageArival, content2_value);
 }
 function initAbsenceView(){
   btn_countAbsences.textContent = "Count Absences";
   btn_countAbsences.classList.add("btn");
   btn_countAbsences.addEventListener("click", amountOfAbsences);
-  legendElement_3.textContent = "Absence";
-  fieldsetElement_3.appendChild(legendElement_3)
-  fieldsetElement_3.appendChild(btn_countAbsences);
-  content3_value.appendChild(fieldsetElement_3);
+
+  new DropDownView("Absence", btn_countAbsences, content3_value);
 }
 function openPopup() {
   document.body.appendChild(popup);
