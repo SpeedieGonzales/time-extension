@@ -16,10 +16,12 @@ const btn_calculateMonth = document.createElement("button");
 const input_calculateBegin = document.createElement("input");
 const input_calculateEnd = document.createElement("input");
 const btn_calculatePeriod = document.createElement("button");
+const btn_countAbsences = document.createElement("button");
 const betweenSymbol = document.createElement("span");
 const div1 = document.createElement("aside");
 const div2 = document.createElement("aside");
 const div3 = document.createElement("aside");
+const div4 = document.createElement("aside");
 const parentdiv = document.createElement("aside");
 
 var currentTab = "";
@@ -158,6 +160,9 @@ function initCalculateStuff() {
       input_calculateEnd.value
     );
   });
+  btn_countAbsences.textContent = "Count Absences";
+  btn_countAbsences.classList.add("btn");
+  btn_countAbsences.addEventListener("click", displayAmountAbsences);
   betweenSymbol.innerText = "-";
   betweenSymbol.style.padding = "5px";
   div1.classList.add("div1");
@@ -170,10 +175,30 @@ function initCalculateStuff() {
   div2.appendChild(btn_calculatePeriod);
   div3.classList.add("div3");
   div3.appendChild(btn_calculateMonth);
+  div4.classList.add("div4");
+  div4.appendChild(btn_countAbsences);
   parentdiv.classList.add("parent");
   parentdiv.appendChild(div1);
   parentdiv.appendChild(div2);
   parentdiv.appendChild(div3);
+  parentdiv.appendChild(div4);
+}
+function displayAmountAbsences(){
+  var absencetime = countAbsences();
+  var month = document.querySelector(
+    'th[data-r="0"][data-c="1"][class="td_blue "]'
+  ).textContent;
+  const row = document.createElement("tr");
+  const labelCell = document.createElement("td");
+  labelCell.innerHTML = "Absencetime in <strong>" + month + "</strong>";
+  const timeCell = document.createElement("td");
+  timeCell.style.textAlign = "right";
+  timeCell.textContent = absencetime;
+
+  row.appendChild(labelCell);
+  row.appendChild(timeCell);
+
+  table.appendChild(row);
 }
 function displayMonthCalculate() {
   var overtime = calculateOvertimeForMonth();
