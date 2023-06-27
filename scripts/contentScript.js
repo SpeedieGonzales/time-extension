@@ -5,23 +5,9 @@ const headSection = document.createElement("section");
 const btn_close = document.createElement("button");
 
 const buttonSection = document.createElement("section");
-const btn_avrageArival = document.createElement("button");
-const btn_goHomeTime = document.createElement("button");
 const btn_toggleEdit = document.createElement("button");
 const tableSection = document.createElement("section");
 const table = document.createElement("table");
-
-const btn_calculateMonth = document.createElement("button");
-const input_calculateBegin = document.createElement("input");
-const input_calculateEnd = document.createElement("input");
-const btn_calculatePeriod = document.createElement("button");
-const btn_countAbsences = document.createElement("button");
-const betweenSymbol = document.createElement("span");
-const div1 = document.createElement("aside");
-const div2 = document.createElement("aside");
-const div3 = document.createElement("aside");
-const div4 = document.createElement("aside");
-const parentdiv = document.createElement("aside");
 
 const content1 = document.createElement("aside");
 const content1_value = document.createElement("aside");
@@ -32,6 +18,8 @@ const content3_value = document.createElement("aside");
 const content4 = document.createElement("aside");
 const content4_value = document.createElement("aside");
 const selectElement = document.createElement("select");
+
+const option0 = document.createElement("option");
 const option1 = document.createElement("option");
 const option2 = document.createElement("option");
 const option3 = document.createElement("option");
@@ -76,7 +64,6 @@ function initPopup() {
 
   headSection.appendChild(btn_close);
 
-  buttonSection.appendChild(btn_avrageArival);
   buttonSection.appendChild(btn_toggleEdit);
   btn_toggleEdit.textContent = "Editable";
   btn_toggleEdit.id = 2;
@@ -95,10 +82,11 @@ function initPopup() {
   popup.appendChild(headSection);
   popup.appendChild(buttonSection);
   popup.appendChild(tableSection);
-
 }
 function initDropdown() {
-
+  option0.text = "Calculator";
+  option0.disabled = true;
+  option0.selected = true;
   option1.text = "Overtime";
   option1.id = "option1";
   option2.text = "Arrival";
@@ -108,12 +96,33 @@ function initDropdown() {
   option4.text = "GoHomeTime";
   option4.id = "option4";
 
-  initOvertimeView();
-  initAbsenceView();
-  initArvivalView();
-  initGoHomeView();
+  new DropDownView(
+    "Overtime",
+    displayMonthCalculate,
+    displayPeriodCalculate,
+    content1_value
+  );
+  new DropDownView(
+    "Absence",
+    amountOfAbsences,
+    displayPeriodCalculate,
+    content3_value
+  );
+  new DropDownView(
+    "Arrival",
+    handleAvrageArivalClick,
+    displayPeriodCalculate,
+    content2_value
+  );
+  new DropDownView(
+    "GoHomeTime",
+    handleAvrageArivalClick,
+    displayPeriodCalculate,
+    content4_value, true
+  );
 
-  selectElement.classList.add("AsButtonDesign")
+  selectElement.classList.add("AsButtonDesign");
+  selectElement.add(option0);
   selectElement.add(option1);
   selectElement.add(option2);
   selectElement.add(option3);
@@ -139,69 +148,15 @@ function initDropdown() {
     for (var i = 0; i < contentElements.length; i++) {
       contentElements[i].classList.remove("active");
     }
-    var id = selectElement.selectedOptions[0].id.charAt(selectElement.selectedOptions[0].id.length - 1);
+    var id = selectElement.selectedOptions[0].id.charAt(
+      selectElement.selectedOptions[0].id.length - 1
+    );
     document.getElementById("content" + id).classList.add("active");
   });
   tableSection.appendChild(content1);
   tableSection.appendChild(content2);
   tableSection.appendChild(content3);
   tableSection.appendChild(content4);
-}
-function initGoHomeView(){
-  btn_goHomeTime.textContent = "GoHomeTime";
-  btn_goHomeTime.classList.add("btn");
-  btn_goHomeTime.addEventListener("click", handleAvrageArivalClick);
-  new DropDownView("GoHomeTime", btn_goHomeTime, content4_value);
-}
-function initOvertimeView(){
-  btn_calculateMonth.textContent = "Month";
-  btn_calculateMonth.classList.add("btn");
-  btn_calculateMonth.addEventListener("click", displayMonthCalculate);
-
-  input_calculateBegin.type = "number";
-  input_calculateBegin.min = 0;
-  input_calculateBegin.max = 31;
-  input_calculateBegin.classList.add("normal_input");
-
-  input_calculateEnd.type = "number";
-  input_calculateEnd.min = 0;
-  input_calculateEnd.max = 31;
-  input_calculateEnd.classList.add("normal_input");
-
-  btn_calculatePeriod.textContent = "Period";
-  btn_calculatePeriod.classList.add("btn");
-  btn_calculatePeriod.addEventListener("click", () => {
-    displayPeriodCalculate(
-      input_calculateBegin.value,
-      input_calculateEnd.value
-    );
-  });
-  betweenSymbol.innerText = "- ";
-
-  var ram = document.createElement("aside");
-  ram.appendChild(input_calculateBegin);
-  ram.appendChild(betweenSymbol);
-  ram.appendChild(input_calculateEnd);
-  ram.appendChild(btn_calculatePeriod);
-  ram.appendChild(btn_calculateMonth);
-
-  new DropDownView("Overtime", ram, content1_value)
-}
-function initArvivalView(){
-  btn_avrageArival.textContent = "Arrival";
-  btn_avrageArival.id = 1;
-  btn_avrageArival.classList.add("btn");
-  btn_avrageArival.classList.add("tablinks");
-  btn_avrageArival.addEventListener("click", handleAvrageArivalClick);
-
-  new DropDownView("Arrival", btn_avrageArival, content2_value);
-}
-function initAbsenceView(){
-  btn_countAbsences.textContent = "Count Absences";
-  btn_countAbsences.classList.add("btn");
-  btn_countAbsences.addEventListener("click", amountOfAbsences);
-
-  new DropDownView("Absence", btn_countAbsences, content3_value);
 }
 function openPopup() {
   document.body.appendChild(popup);

@@ -51,26 +51,6 @@
   background-color: #7caffc;
   color: black;
 }
-.parent {
-  display: grid;
-  grid-column-gap: 10px;
-  grid-row-gap: 5px;
-}
-
-.div1 {
-  grid-area: 1 / 1;
-}
-.div2 {
-  grid-area: 1 / 2;
-}
-.div3 {
-  grid-area: 2 / 2;
-  margin-bottom: 5px;
-}
-.div4 {
-  grid-area: 2 / 1;
-  margin-bottom: 5px;
-}
 .table-section {
   height: 100%;
 }
@@ -102,3 +82,13 @@
   border-radius: 5px;
   padding: 8px
 }
+.parent {
+  display: grid;
+  grid-column-gap: 5px;
+  grid-row-gap: 5px;
+  }
+  
+  .div1 { grid-area: 1 / 1 }
+  .div2 { grid-area: 1 / 2 }
+  .div3 { grid-area: 2 / 1 }
+  .div4 { grid-area: 2 / 2 }
