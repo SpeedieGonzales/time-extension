@@ -103,18 +103,16 @@ function initDropdown() {
     displayPeriodCalculate,
     content1_value
   );
-  /*TODO: PeriodCalculate*/
   new DropDownView(
     "Absence",
     amountOfAbsences,
-    displayPeriodCalculate,
+    periodOfAbsences,
     content3_value
   );
-  /*TODO: PeriodCalculate*/
   new DropDownView(
     "Arrival",
     handleAvrageArivalClick,
-    displayPeriodCalculate,
+    periodAverageArival,
     content2_value
   );
   /*TODO: PeriodCalculate & Minutes (evtl ebenfalls minus zeit) -> In Zukunft auch möglich bis ende monat berechnen wie viel überzeit pro Tag gemacht werden muss*/
@@ -221,7 +219,10 @@ function displayInTable(Value, type, IsPeriod, begin = 0, end = 0) {
 }
 
 function amountOfAbsences() {
-  displayInTable(countAbsences(), "Absencetime", false);
+  displayInTable(countAbsences(false), "Absencetime", false);
+}
+function periodOfAbsences(begin, end){
+  displayInTable(countAbsences(true, begin, end), "Absencetime", false);
 }
 function displayMonthCalculate() {
   displayInTable(calculateOvertimeForMonth(), "Overtime", false);
@@ -242,7 +243,10 @@ function displayPeriodCalculate(begin, end) {
   );
 }
 function handleAvrageArivalClick() {
-  displayInTable(getAvrageArival(), "Arival", false);
+  displayInTable(getAvrageArival(false), "Arival", false);
+}
+function periodAverageArival(begin, end){
+  displayInTable(getAvrageArival(true, begin, end), "Arival", false);
 }
 function handleToggleEditClick() {
   toggleContentEditableOfArivalTimes();
