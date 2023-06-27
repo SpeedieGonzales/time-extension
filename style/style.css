@@ -83,4 +83,17 @@
     border-style: inset;
     display: inline;
     overflow: hidden;
+    margin-right: 5px;
 }
+.content {
+  display: none;
+  transition: opacity 0.3s ease;
+  margin-bottom: 5px;
+}
+
+.content.active {
+  display: block;
+  opacity: 1;
+  margin-bottom: 5px;
+}
+

@@ -46,12 +46,9 @@ function calculateOvertimeForMonth(){
 function countAbsences(){
     var absencetime = 0;
     var fields = document.querySelectorAll("td[data-c='6']");
-    console.log(fields);
     fields.forEach(function(field){
         if(field.textContent.length != 0 && field.textContent.length > 4){
-            console.log(field.textContent);
             absencetime += TimeParser.parseStringToInt(field.textContent.substring(field.textContent.length - 4));
-            console.log(absencetime);
         }
     })
    return TimeParser.parseIntToTime(absencetime);

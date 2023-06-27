@@ -6,6 +6,6 @@ chrome.action.onClicked.addListener((tab) => {
 
     chrome.scripting.executeScript({
         target: { tabId: tab.id },
-        files: ['scripts/timeParser.js','scripts/calculator.js', 'scripts/drag.js', 'scripts/contentScript.js']
+        files: ['scripts/dropdownView.js','scripts/timeParser.js','scripts/calculator.js', 'scripts/drag.js', 'scripts/contentScript.js']
     });
 });
