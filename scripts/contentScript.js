@@ -145,6 +145,12 @@ function displayCalculateStuff() {
       input_calculateEnd.value
     );
   });
+
+  const btn_countAbsences = document.createElement("button");
+  btn_countAbsences.textContent = "Count Absences";
+  btn_countAbsences.classList.add("btn");
+  btn_countAbsences.addEventListener("click", displayAmountAbsences);
+
   const betweenSymbol = document.createTextNode("-");
   const div1 = document.createElement("aside");
   div1.classList.add("div1");
@@ -159,15 +165,36 @@ function displayCalculateStuff() {
   const div3 = document.createElement("aside");
   div3.classList.add("div3");
   div3.appendChild(btn_calculateMonth);
+  const div4 = document.createElement("aside");
+  div4.classList.add("div4");
+  div4.appendChild(btn_countAbsences);
   const parentdiv = document.createElement("aside");
   parentdiv.classList.add("parent");
   parentdiv.appendChild(div1);
   parentdiv.appendChild(div2);
   parentdiv.appendChild(div3);
+  parentdiv.appendChild(div4);
 
   tableSection.removeChild(table);
   tableSection.appendChild(parentdiv);
   tableSection.appendChild(table);
+}
+function displayAmountAbsences(){
+  var absencetime = countAbsences();
+  var month = document.querySelector(
+    'th[data-r="0"][data-c="1"][class="td_blue "]'
+  ).textContent;
+  const row = document.createElement("tr");
+  const labelCell = document.createElement("td");
+  labelCell.innerHTML = "Absencetime in <strong>" + month + "</strong>";
+  const timeCell = document.createElement("td");
+  timeCell.style.textAlign = "right";
+  timeCell.textContent = absencetime;
+
+  row.appendChild(labelCell);
+  row.appendChild(timeCell);
+
+  table.appendChild(row);
 }
 function displayMonthCalculate() {
   var overtime = calculateOvertimeForMonth();

@@ -67,6 +67,10 @@
   grid-area: 2 / 2;
   margin-bottom: 5px;
 }
+.div4 {
+  grid-area: 2 / 1;
+  margin-bottom: 5px;
+}
 .table-section {
   height: 100%;
 }
