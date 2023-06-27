@@ -56,3 +56,28 @@ function countAbsences(){
     })
    return TimeParser.parseIntToTime(absencetime);
 }
+function getAvrageArival() {
+    const elements = document.querySelectorAll('td[data-c="8"]');
+    var list = [];
+    elements.forEach(function (element) {
+      if (element.textContent != "") {
+        var time = element.textContent;
+        const [hours, minutes] = time.split(":");
+        var houresAndMinutes = Number(hours) + Number(minutes) / 60;
+        list.push(houresAndMinutes);
+      }
+    });
+  
+    var allTimes = 0;
+    list.forEach(function (time) {
+      allTimes += time;
+    });
+    var avrageTime = allTimes / list.length;
+    var hours = Math.floor(avrageTime);
+    var minutes = String(Math.floor((avrageTime - hours) * 60));
+    if (minutes.length <= 1) {
+      minutes = "0" + minutes;
+    }
+    var avrageTimeStr = " " + String(hours) + ":" + minutes;
+    return avrageTimeStr;
+  }
