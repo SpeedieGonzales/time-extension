@@ -1,30 +1,16 @@
-function calculateOvertime(specifiedfields) {
-  var count = specifiedfields.length;
-  var overtime = 0;
-  for (let x = 0; x < count; x++) {
-    var currentovertime = specifiedfields[x].textContent;
-    if (!checkIfStringContainsLetter(currentovertime)) {
-      overtime += TimeParser.parseStringToInt(currentovertime);
-    }
-  }
-  overtime = TimeParser.parseIntToTime(overtime);
-  return overtime;
-}
-
-function checkIfStringContainsLetter(string) {
-  var kleinerString = string.toLowerCase();
-  if (/[a-z]/i.test(kleinerString)) {
-    return true;
-  } else {
-    return false;
-  }
-}
 function calculateOvertimeByPeriod(begin, end) {
-  var fields = document.querySelectorAll("td[data-c='4']:not(.td_green)");
+  var fields = document.querySelectorAll("td[data-c='5']:not(.td_green)");
   var fieldsInRange = [];
-  fieldsInRange = getFieldsForPeriod(begin, end, fieldsInRange, fields);
-  var overtime = calculateOvertime(fieldsInRange);
-  return overtime;
+  fieldsInRange = getFieldsForPeriod(begin, end, fields);
+
+  var overtimefields = document.querySelectorAll("td[data-c='4']:not(.td_green)");
+
+  var beginfield = TimeParser.parseStringToInt(fieldsInRange[0].textContent);
+  var overtimeFromBeginfield = TimeParser.parseStringToInt(overtimefields[0].textContent);
+  beginfield = beginfield - overtimeFromBeginfield;
+  var endfield = TimeParser.parseStringToInt(fieldsInRange[fieldsInRange.length -1].textContent);
+  return TimeParser.parseIntToTime(endfield-beginfield);
+
 }
 function getFieldsForPeriod(begin, end, fields) {
   beginInNumber = parseInt(begin);
@@ -42,15 +28,19 @@ function getFieldsForPeriod(begin, end, fields) {
   var list = fieldsInRange;
   return list;
 }
+function getFirstTimeOfMonth(){
+  return TimeParser.parseStringToInt(document.querySelector('td[data-r="0"][data-c="5"]:not(:empty)').textContent);
+}
+function getLastTimeOfMonth(){
+  var elements = document.querySelectorAll("td[data-c='5'][ondblclick]:not(.td_green)");
+  return TimeParser.parseStringToInt(elements[elements.length - 1].textContent);
+}
 function calculateOvertimeForMonth() {
-  var fields = document.querySelectorAll("td[data-c='4']");
-  var specifiedfields = [];
-  fields.forEach(function (field) {
-    if (field.textContent.length != 0) {
-      specifiedfields.push(field);
-    }
-  });
-  return calculateOvertime(specifiedfields);
+  var beginfield = getFirstTimeOfMonth();
+  var overtimeBegin = TimeParser.parseStringToInt(document.querySelector('[data-r="0"][data-c="4"]').textContent);
+  var begintime = beginfield-overtimeBegin;
+  var endfield = getLastTimeOfMonth();
+  return TimeParser.parseIntToTime(endfield-begintime)
 }
 function countAbsences(IsPeriod, begin = 0, end = 0) {
   var absencetime = 0;
@@ -137,7 +127,7 @@ function getTimesFromTimeStamp(stamps) {
   }
   return times;
 }
-function calculateEndtime(overtime) {
+function calculateEndtime(hours, minutes) {
   var timeStamps = getTodaysTimeStamps();
   var times = getTimesFromTimeStamp(timeStamps);
   var endTime = 0;
@@ -150,7 +140,8 @@ function calculateEndtime(overtime) {
   if (lastStamp < 12) {
     lastStamp = lastStamp + 0.5;
   }
-  endTime = lastStamp + (8 + overtime - timeSum);
+  hours = minutes/60 + hours;
+  endTime = lastStamp + (8 + hours - timeSum);
 
   return TimeParser.parseIntToTime(endTime);
 }

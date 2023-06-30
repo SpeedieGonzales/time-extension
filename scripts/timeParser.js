@@ -1,5 +1,8 @@
 class TimeParser {
   static parseStringToInt(str) {
+    if(str == ""){
+      return 0;
+    }
     var parts = str.split(":");
     if (parts[0].startsWith("-")) {
         parts[0] = parts[0].replace(/\s/g, "");
