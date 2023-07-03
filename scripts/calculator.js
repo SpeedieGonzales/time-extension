@@ -157,11 +157,14 @@ function checkForAbsences(){
   return absencetime;
 }
 function calculateCurrentOvertime(hours = 0, minutes = 0){
-  hours = parseInt(hours);
-  minutes = parseInt(minutes);
-  if(hours == 0){
+  if(hours == ""){
     hours = 17;
   }
+  if(minutes == ""){
+    minutes = 0;
+  }
+  hours = parseInt(hours);
+  minutes = parseInt(minutes);
   var leaveTime = hours + (minutes/60);
   var fulltime = 8;
   var timeStamps = getTodaysTimeStamps();

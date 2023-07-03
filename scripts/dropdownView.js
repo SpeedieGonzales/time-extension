@@ -63,17 +63,17 @@ class DropDownView {
       input_calculateBegin.max = 31;
       input_calculateBegin.classList.add("normal_input");
 
-      var input_leaveTimeHours = document.createElement("input");
-      input_leaveTimeHours.type = "number";
-      input_leaveTimeHours.min = 0;
-      input_leaveTimeHours.max = 31;
-      input_leaveTimeHours.classList.add("normal_input");
+      var input_calculateEnd = document.createElement("input");
+      input_calculateEnd.type = "number";
+      input_calculateEnd.min = 0;
+      input_calculateEnd.max = 31;
+      input_calculateEnd.classList.add("normal_input");
 
       var btn_Current = document.createElement("button");
       btn_Current.textContent = "Period";
       btn_Current.classList.add("btn");
       btn_Current.addEventListener("click", () => {
-        btn_Period_Function(input_calculateBegin.value, input_leaveTimeHours.value);
+        btn_Period_Function(input_calculateBegin.value, input_calculateEnd.value);
       });
 
       var btn_Month = document.createElement("button");
@@ -85,7 +85,7 @@ class DropDownView {
       var symbolTextNode = document.createTextNode(betweenSymbol);
       div1.appendChild(input_calculateBegin);
       div1.appendChild(symbolTextNode);
-      div1.appendChild(input_leaveTimeHours);
+      div1.appendChild(input_calculateEnd);
       div2.appendChild(btn_Current);
       div4.appendChild(btn_Month);
     }
