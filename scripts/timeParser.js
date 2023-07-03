@@ -21,7 +21,8 @@ class TimeParser {
       hoursString =  "-0" + hoursString.substring(1);
     }
     var minutesString = minutes.toString().padStart(2, '0');
-    if (minutesString.startsWith("-")) {
+    if (minutesString.startsWith("-") && !hoursString.startsWith("-")) {
+      hoursString = "-" + hoursString;
       minutesString = minutesString.substring(1);
     }
     return hoursString + ':' + minutesString;

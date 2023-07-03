@@ -101,7 +101,8 @@ function initDropdown() {
     "Overtime",
     displayMonthCalculate,
     displayPeriodCalculate,
-    content1_value
+    content1_value,
+    "currentOvertime"
   );
   new DropDownView(
     "Absence",
@@ -115,12 +116,13 @@ function initDropdown() {
     periodAverageArival,
     content2_value
   );
-  /*TODO: PeriodCalculate & Minutes (evtl ebenfalls minus zeit) -> In Zukunft auch möglich bis ende monat berechnen wie viel überzeit pro Tag gemacht werden muss*/
+  /*TODO: PeriodCalculate & Minutes (evtl ebenfalls minus zeit) -> In Zukunft auch möglich bis ende monat berechnen wie viel überzeit pro Tag gemacht werden muss Plus berücksichtigung der Absenzen*/
   new DropDownView(
     "GoHomeTime",
     calculateEndtime,
     displayPeriodCalculate,
-    content4_value, true
+    content4_value, 
+    "isHomeTime"
   );
 
   selectElement.classList.add("AsButtonDesign");
@@ -226,6 +228,9 @@ function periodOfAbsences(begin, end){
 }
 function displayMonthCalculate() {
   displayInTable(calculateOvertimeForMonth(), "Overtime", false);
+}
+function displayCurrentOvertime(hours = 0, minutes = 0){
+  displayInTable(calculateCurrentOvertime(hours, minutes), "Expected Overtime", false);
 }
 function displayPeriodCalculate(begin, end) {
   if (parseInt(begin) < 10 && !begin.startsWith("0")) {

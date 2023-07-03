@@ -104,7 +104,6 @@ function getTodaysRowInt() {
 }
 function getTodaysTimeStamps() {
   var todaysRow = getTodaysRowInt();
-  console.log(todaysRow);
   var fields = document.querySelectorAll(`td[data-r='${todaysRow}'][data-c]`);
   var array = Array.from(fields);
   array.splice(0, 8);
@@ -140,9 +139,45 @@ function calculateEndtime(hours, minutes) {
   if (lastStamp < 12) {
     lastStamp = lastStamp + 0.5;
   }
+  var absencetime = checkForAbsences();
   hours = minutes/60 + hours;
-  endTime = lastStamp + (8 + hours - timeSum);
+  endTime = lastStamp + (8 + hours - timeSum - absencetime);
 
   return TimeParser.parseIntToTime(endTime);
+}
+function checkForAbsences(){
+  var row = getTodaysRowInt();
+  var absencetime = 0;
+  var absencefields = document.querySelectorAll(`td[data-r='${row}'][data-c="6"], td[data-r='${row}'][data-c="7"]`);
+  absencefields.forEach((field) => {
+    if (field.textContent.length != 0) {
+      absencetime.push(TimeParser.parseStringToInt(field.textContent));
+    }
+  });
+  return absencetime;
+}
+function calculateCurrentOvertime(hours = 0, minutes = 0){
+  hours = parseInt(hours);
+  minutes = parseInt(minutes);
+  if(hours == 0){
+    hours = 17;
+  }
+  var leaveTime = hours + (minutes/60);
+  var fulltime = 8;
+  var timeStamps = getTodaysTimeStamps();
+  var times = getTimesFromTimeStamp(timeStamps);
+  let timeSum = 0;
+  times.forEach((time) => {
+    timeSum += time;
+  });
+  var lastStamp = timeStamps[timeStamps.length - 1];
+  if (lastStamp < 12) {
+    lastStamp = lastStamp + 0.5;
+  }
+  var absencetime = checkForAbsences();
+  var diff = leaveTime - lastStamp;
+
+  var currentOvertime = (timeSum + diff + absencetime) - fulltime;
+  return TimeParser.parseIntToTime(currentOvertime);
 }
 
