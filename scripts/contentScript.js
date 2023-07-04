@@ -18,6 +18,8 @@ const content3 = document.createElement("aside");
 const content3_value = document.createElement("aside");
 const content4 = document.createElement("aside");
 const content4_value = document.createElement("aside");
+const content5 = document.createElement("aside");
+const content5_value = document.createElement("aside");
 const selectElement = document.createElement("select");
 
 const option0 = document.createElement("option");
@@ -25,6 +27,7 @@ const option1 = document.createElement("option");
 const option2 = document.createElement("option");
 const option3 = document.createElement("option");
 const option4 = document.createElement("option");
+const option5 = document.createElement("option");
 
 var currentTab = "";
 
@@ -90,19 +93,20 @@ function initDropdown() {
   option0.selected = true;
   option1.text = "Overtime";
   option1.id = "option1";
-  option2.text = "Arrival";
-  option2.id = "option2";
+  option5.text = "Arrival";
+  option5.id = "option5";
   option3.text = "Absence";
   option3.id = "option3";
   option4.text = "GoHomeTime";
   option4.id = "option4";
+  option2.text = "Expected Overtime";
+  option2.id = "option2";
 
   new DropDownView(
     "Overtime",
     displayMonthCalculate,
     displayPeriodCalculate,
-    content1_value,
-    "currentOvertime"
+    content1_value
   );
   new DropDownView(
     "Absence",
@@ -114,7 +118,7 @@ function initDropdown() {
     "Arrival",
     handleAvrageArivalClick,
     periodAverageArival,
-    content2_value
+    content5_value
   );
   /*TODO: PeriodCalculate & Minutes (evtl ebenfalls minus zeit) -> In Zukunft auch möglich bis ende monat berechnen wie viel überzeit pro Tag gemacht werden muss Plus berücksichtigung der Absenzen*/
   new DropDownView(
@@ -124,13 +128,20 @@ function initDropdown() {
     content4_value, 
     "isHomeTime"
   );
-
+  new DropDownView(
+    "Expected Overtime",
+    displayCurrentOvertime,
+    displayCurrentOvertimeWithSpecificValues,
+    content2_value,
+    "currentOvertime"
+  );
   selectElement.classList.add("AsButtonDesign");
   selectElement.add(option0);
   selectElement.add(option1);
   selectElement.add(option2);
   selectElement.add(option3);
   selectElement.add(option4);
+  selectElement.add(option5);
   buttonSection.appendChild(selectElement);
 
   content1.id = "content1";
@@ -145,6 +156,9 @@ function initDropdown() {
   content4.id = "content4";
   content4.classList.add("content");
   content4.appendChild(content4_value);
+  content5.id = "content5";
+  content5.classList.add("content");
+  content5.appendChild(content5_value);
 
   var contentElements = document.getElementsByClassName("content");
   selectElement.addEventListener("change", function () {
@@ -161,6 +175,7 @@ function initDropdown() {
   tableSection.appendChild(content2);
   tableSection.appendChild(content3);
   tableSection.appendChild(content4);
+  tableSection.appendChild(content5);
 }
 
 function openPopup() {
@@ -200,6 +215,7 @@ function openTab(tabID) {
   currentTab.classList.add("active");
 }
 function displayInTable(Value, type, IsPeriod, begin = 0, end = 0) {
+  Value = formatTime(Value);
   var month = document.querySelector(
     'th[data-r="0"][data-c="1"][class="td_blue "]'
   ).textContent;
@@ -229,16 +245,13 @@ function periodOfAbsences(begin, end){
 function displayMonthCalculate() {
   displayInTable(calculateOvertimeForMonth(), "Overtime", false);
 }
-function displayCurrentOvertime(hours = 0, minutes = 0){
-  displayInTable(calculateCurrentOvertime(hours, minutes), "Expected Overtime", false);
+function displayCurrentOvertime(){
+  displayInTable(calculateCurrentOvertime(), "Expected Overtime", false);
+}
+function displayCurrentOvertimeWithSpecificValues(hours = 0, minutes = 0, pause = 0){
+  displayInTable(calculateCurrentOvertime(hours, minutes, pause), "Expected Overtime", false);
 }
 function displayPeriodCalculate(begin, end) {
-  if (parseInt(begin) < 10 && !begin.startsWith("0")) {
-    begin = "0" + begin;
-  }
-  if (parseInt(end) < 10 && !end.startsWith("0")) {
-    end = "0" + end;
-  }
   displayInTable(
     calculateOvertimeByPeriod(begin, end),
     "Overtime",

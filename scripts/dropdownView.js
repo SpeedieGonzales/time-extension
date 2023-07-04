@@ -72,9 +72,7 @@ class DropDownView {
       var btn_Current = document.createElement("button");
       btn_Current.textContent = "Period";
       btn_Current.classList.add("btn");
-      btn_Current.addEventListener("click", () => {
-        btn_Period_Function(input_calculateBegin.value, input_calculateEnd.value);
-      });
+      
 
       var btn_Month = document.createElement("button");
       btn_Month.textContent = "Month";
@@ -86,6 +84,24 @@ class DropDownView {
       div1.appendChild(input_calculateBegin);
       div1.appendChild(symbolTextNode);
       div1.appendChild(input_calculateEnd);
+      if (special == "currentOvertime") {
+        var input_pauseTime = document.createElement("input");
+        input_pauseTime.type = "number";
+        input_pauseTime.min = 0;
+        input_pauseTime.max = 60;
+        input_pauseTime.classList.add("normal_input");
+        btn_Month.textContent = "Normal";
+        btn_Current.textContent = "Specified";
+        symbolTextNode.textContent = ": "
+        div1.appendChild(input_pauseTime);
+        btn_Current.addEventListener("click", () => {
+          btn_Period_Function(input_calculateBegin.value, input_calculateEnd.value, input_pauseTime.value);
+        });
+      }else{
+        btn_Current.addEventListener("click", () => {
+          btn_Period_Function(input_calculateBegin.value, input_calculateEnd.value);
+        });
+      }
       div2.appendChild(btn_Current);
       div4.appendChild(btn_Month);
     }
@@ -93,40 +109,7 @@ class DropDownView {
     parent.appendChild(div2);
     parent.appendChild(div3);
     parent.appendChild(div4);
-    if (special == "currentOvertime") {
-      var div5 = document.createElement("aside");
-      div5.classList.add("div5");
-      var div6 = document.createElement("aside");
-      div6.classList.add("div6");
-
-      var btn_Current = document.createElement("button");
-      btn_Current.textContent = "Expected Overtime";
-      btn_Current.classList.add("btn");
-      btn_Current.addEventListener("click", () => {
-        displayCurrentOvertime(input_leaveTimeHours.value, input_leaveTimeMinutes.value);
-      });
-
-      var input_leaveTimeHours = document.createElement("input");
-      input_leaveTimeHours.type = "number";
-      input_leaveTimeHours.min = 0;
-      input_leaveTimeHours.max = 24;
-      input_leaveTimeHours.classList.add("normal_input");
-
-      var input_leaveTimeMinutes = document.createElement("input");
-      input_leaveTimeMinutes.type = "number";
-      input_leaveTimeMinutes.min = 0;
-      input_leaveTimeMinutes.max = 59;
-      input_leaveTimeMinutes.classList.add("normal_input");
-
-      var betweenSymbol = ": ";
-      var symbolTextNode = document.createTextNode(betweenSymbol);
-      div5.appendChild(input_leaveTimeHours);
-      div5.appendChild(symbolTextNode);
-      div5.appendChild(input_leaveTimeMinutes);
-      div6.appendChild(btn_Current);
-      parent.appendChild(div5);
-      parent.appendChild(div6);
-    }
+   
     legendElement.textContent = title;
     fieldsetElement.appendChild(legendElement);
     fieldsetElement.appendChild(parent);

@@ -156,12 +156,15 @@ function checkForAbsences(){
   });
   return absencetime;
 }
-function calculateCurrentOvertime(hours = 0, minutes = 0){
+function calculateCurrentOvertime(hours = 17, minutes = 0, pause = 30){
   if(hours == ""){
     hours = 17;
   }
   if(minutes == ""){
     minutes = 0;
+  }
+  if(pause == ""){
+    pause = 30;
   }
   hours = parseInt(hours);
   minutes = parseInt(minutes);
@@ -175,12 +178,25 @@ function calculateCurrentOvertime(hours = 0, minutes = 0){
   });
   var lastStamp = timeStamps[timeStamps.length - 1];
   if (lastStamp < 12) {
-    lastStamp = lastStamp + 0.5;
+    lastStamp = lastStamp + (pause/60);
   }
   var absencetime = checkForAbsences();
   var diff = leaveTime - lastStamp;
 
   var currentOvertime = (timeSum + diff + absencetime) - fulltime;
+  console.log(TimeParser.parseIntToTime(currentOvertime));
   return TimeParser.parseIntToTime(currentOvertime);
+}
+function formatTime(time) {
+  var parts = time.split(':');
+  var hours = parts[0];
+  var minutes = parts[1];
+  if (hours.length === 1) {
+    hours = '0' + hours;
+  }
+  if (minutes.length === 1) {
+    minutes = '0' + minutes;
+  }
+  return hours + ':' + minutes;
 }
 
