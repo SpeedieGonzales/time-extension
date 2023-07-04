@@ -184,7 +184,6 @@ function calculateCurrentOvertime(hours = 17, minutes = 0, pause = 30){
   var diff = leaveTime - lastStamp;
 
   var currentOvertime = (timeSum + diff + absencetime) - fulltime;
-  console.log(TimeParser.parseIntToTime(currentOvertime));
   return TimeParser.parseIntToTime(currentOvertime);
 }
 function formatTime(time) {

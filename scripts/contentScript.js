@@ -10,24 +10,7 @@ const btn_toggleEdit = document.createElement("button");
 const tableSection = document.createElement("section");
 const table = document.createElement("table");
 
-const content1 = document.createElement("aside");
-const content1_value = document.createElement("aside");
-const content2 = document.createElement("aside");
-const content2_value = document.createElement("aside");
-const content3 = document.createElement("aside");
-const content3_value = document.createElement("aside");
-const content4 = document.createElement("aside");
-const content4_value = document.createElement("aside");
-const content5 = document.createElement("aside");
-const content5_value = document.createElement("aside");
 const selectElement = document.createElement("select");
-
-const option0 = document.createElement("option");
-const option1 = document.createElement("option");
-const option2 = document.createElement("option");
-const option3 = document.createElement("option");
-const option4 = document.createElement("option");
-const option5 = document.createElement("option");
 
 var currentTab = "";
 
@@ -88,78 +71,9 @@ function initPopup() {
   popup.appendChild(tableSection);
 }
 function initDropdown() {
-  option0.text = "Calculator";
-  option0.disabled = true;
-  option0.selected = true;
-  option1.text = "Overtime";
-  option1.id = "option1";
-  option5.text = "Arrival";
-  option5.id = "option5";
-  option3.text = "Absence";
-  option3.id = "option3";
-  option4.text = "GoHomeTime";
-  option4.id = "option4";
-  option2.text = "Expected Overtime";
-  option2.id = "option2";
-
-  new DropDownView(
-    "Overtime",
-    displayMonthCalculate,
-    displayPeriodCalculate,
-    content1_value
-  );
-  new DropDownView(
-    "Absence",
-    amountOfAbsences,
-    periodOfAbsences,
-    content3_value
-  );
-  new DropDownView(
-    "Arrival",
-    handleAvrageArivalClick,
-    periodAverageArival,
-    content5_value
-  );
-  /*TODO: PeriodCalculate & Minutes (evtl ebenfalls minus zeit) -> In Zukunft auch möglich bis ende monat berechnen wie viel überzeit pro Tag gemacht werden muss Plus berücksichtigung der Absenzen*/
-  new DropDownView(
-    "GoHomeTime",
-    calculateEndtime,
-    displayPeriodCalculate,
-    content4_value, 
-    "isHomeTime"
-  );
-  new DropDownView(
-    "Expected Overtime",
-    displayCurrentOvertime,
-    displayCurrentOvertimeWithSpecificValues,
-    content2_value,
-    "currentOvertime"
-  );
+  new ContentViews();
   selectElement.classList.add("AsButtonDesign");
-  selectElement.add(option0);
-  selectElement.add(option1);
-  selectElement.add(option2);
-  selectElement.add(option3);
-  selectElement.add(option4);
-  selectElement.add(option5);
   buttonSection.appendChild(selectElement);
-
-  content1.id = "content1";
-  content1.classList.add("content");
-  content1.appendChild(content1_value);
-  content2.id = "content2";
-  content2.classList.add("content");
-  content2.appendChild(content2_value);
-  content3.id = "content3";
-  content3.classList.add("content");
-  content3.appendChild(content3_value);
-  content4.id = "content4";
-  content4.classList.add("content");
-  content4.appendChild(content4_value);
-  content5.id = "content5";
-  content5.classList.add("content");
-  content5.appendChild(content5_value);
-
   var contentElements = document.getElementsByClassName("content");
   selectElement.addEventListener("change", function () {
     table.innerHTML = "";
@@ -171,11 +85,6 @@ function initDropdown() {
     );
     document.getElementById("content" + id).classList.add("active");
   });
-  tableSection.appendChild(content1);
-  tableSection.appendChild(content2);
-  tableSection.appendChild(content3);
-  tableSection.appendChild(content4);
-  tableSection.appendChild(content5);
 }
 
 function openPopup() {
@@ -205,11 +114,6 @@ function openTab(tabID) {
     table.innerHTML = "";
     currentTab = currentTabByID;
     tableSection.innerHTML = "";
-    if (tabID == 3) {
-      tableSection.appendChild(content1);
-      tableSection.appendChild(content2);
-      tableSection.appendChild(content3);
-    }
     tableSection.appendChild(table);
   }
   currentTab.classList.add("active");
