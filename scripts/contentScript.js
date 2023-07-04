@@ -71,7 +71,7 @@ function initPopup() {
   popup.appendChild(tableSection);
 }
 function initDropdown() {
-  new ContentViews();
+  new ContentViews(selectElement, tableSection);
   selectElement.classList.add("AsButtonDesign");
   buttonSection.appendChild(selectElement);
   var contentElements = document.getElementsByClassName("content");

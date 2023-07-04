@@ -1,39 +1,74 @@
 class ContentViews {
-  constructor() {
-    var firstoption = CreateFirstOption();
-    selectElement.add(firstoption);
-    var nameArray = ['Overtime', 'Expected Overtime', 'Absence', 'Arrival', 'GoHomeTime'];
-    var functionMonthArray = [displayMonthCalculate,displayCurrentOvertime,amountOfAbsences,handleAvrageArivalClick,calculateEndtime];
-    var functionPeriodArray = [displayPeriodCalculate,displayCurrentOvertimeWithSpecificValues,periodOfAbsences,periodAverageArival,displayPeriodCalculate];
-    var SpecialArray =['','currentOvertime','','','isHomeTime']
-    for (let x = 0; x < nameArray.length; x++) {
-      var content = "content" + x.toString();
-      var contentValue = "content" + x.toString() + "_value";
-      var option = "option" + x.toString();
-      content = document.createElement("aside");
-      contentValue = document.createElement("aside");
-      option = document.createElement("option");
-      option.text = nameArray[x];
-      option.id = "option" + x.toString();
+  constructor(selectElement, tableSection) {
+    this.selectElement = selectElement;
+    this.tableSection = tableSection;
+    this.contentViews = [
+      {
+        name: "Overtime",
+        functionMonth: displayMonthCalculate,
+        functionPeriod: displayPeriodCalculate,
+        special: "",
+      },
+      {
+        name: "Expected Overtime",
+        functionMonth: displayCurrentOvertime,
+        functionPeriod: displayCurrentOvertimeWithSpecificValues,
+        special: "currentOvertime",
+      },
+      {
+        name: "Absence",
+        functionMonth: amountOfAbsences,
+        functionPeriod: periodOfAbsences,
+        special: "",
+      },
+      {
+        name: "Arrival",
+        functionMonth: handleAvrageArivalClick,
+        functionPeriod: periodAverageArival,
+        special: "",
+      },
+      {
+        name: "GoHomeTime",
+        functionMonth: calculateEndtime,
+        functionPeriod: displayPeriodCalculate,
+        special: "isHomeTime",
+      },
+    ];
+
+    this.createFirstOption();
+    this.createContentViews();
+  }
+
+  createFirstOption() {
+    const option = document.createElement("option");
+    option.text = "Calculator";
+    option.disabled = true;
+    option.selected = true;
+    this.selectElement.add(option);
+  }
+
+  createContentViews() {
+    this.contentViews.forEach((contentView, index) => {
+      const content = document.createElement("aside");
+      const contentValue = document.createElement("aside");
+      const option = document.createElement("option");
+
+      option.text = contentView.name;
+      option.id = `option${index}`;
+      this.selectElement.add(option);
+
       new DropDownView(
-        nameArray[x],
-        functionMonthArray[x],
-        functionPeriodArray[x],
+        contentView.name,
+        contentView.functionMonth,
+        contentView.functionPeriod,
         contentValue,
-        SpecialArray[x]
+        contentView.special
       );
-      selectElement.add(option);
-      content.id = "content" + x.toString();
+
+      content.id = `content${index}`;
       content.classList.add("content");
       content.appendChild(contentValue);
-      tableSection.appendChild(content);
-    }
+      this.tableSection.appendChild(content);
+    });
   }
-}
-function CreateFirstOption() {
-  var option = document.createElement("option");
-  option.text = "Calculator";
-  option.disabled = true;
-  option.selected = true;
-  return option;
 }
