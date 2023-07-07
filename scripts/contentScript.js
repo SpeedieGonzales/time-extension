@@ -119,10 +119,16 @@ function openTab(tabID) {
   currentTab.classList.add("active");
 }
 function displayInTable(Value, type, IsPeriod, begin = 0, end = 0) {
-  Value = formatTime(Value);
-  var month = document.querySelector(
-    'th[data-r="0"][data-c="1"][class="td_blue "]'
-  ).textContent;
+  var month = "";
+  if(Array.isArray(Value)){
+    month = Value[1] + " Days";
+    Value = Value[0];
+  }else{
+    Value = formatTime(Value);
+    month = document.querySelector(
+      'th[data-r="0"][data-c="1"][class="td_blue "]'
+    ).textContent;
+  }
   const row = document.createElement("tr");
   const labelCell = document.createElement("td");
   if (IsPeriod) {
@@ -164,8 +170,8 @@ function displayPeriodCalculate(begin, end) {
     end
   );
 }
-function displayCalculateOfOvertimePerDay(goalhours, goalminutes){
-  displayInTable(calculateDailyOvertimeByGoal(goalhours, goalminutes), "Overtime per Day:", false);
+function displayCalculateOfOvertimePerDay(weeks, days, hours){
+  displayInTable(calculateDailyOvertimeByGoal(weeks, days,hours), "Overtime per Day ", false);
 }
 function handleAvrageArivalClick() {
   displayInTable(getAvrageArival(false), "Arival", false);

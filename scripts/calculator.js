@@ -51,9 +51,10 @@ function getStartAmountOfOvertime() {
   );
   return beginfield - overtimeBegin;
 }
-function calculateDailyOvertimeByGoal(goalhours, goalminutes) {
-  var goal = parseInt(goalhours) + parseInt(goalminutes) / 60;
+function calculateDailyOvertimeByGoal(week, days, hour) {
+  var hours = parseInt(hour) + (parseInt(days)*8)+((parseInt(week) * 5)*8)
   var startOvertime = getStartAmountOfOvertime();
+  var goal = startOvertime + hours;
   var allDays = document.querySelectorAll(
     `td[data-c="2"]:not(:empty), td[data-c="3"]:empty`
   );
@@ -81,7 +82,8 @@ function calculateDailyOvertimeByGoal(goalhours, goalminutes) {
   var absencetime = countAbsences(true, allDays[y].getAttribute("data-r"), lastElement.getAttribute("data-r"));
   var amountOfDays = x - TimeParser.parseStringToInt(absencetime) / 8;
   var diff = goal - startOvertime;
-  return TimeParser.parseIntToTime(diff / amountOfDays);
+  var solution = [TimeParser.parseIntToTime(diff / amountOfDays), amountOfDays]
+  return solution;
 }
 function calculateOvertimeForMonth() {
   var begintime = getStartAmountOfOvertime();

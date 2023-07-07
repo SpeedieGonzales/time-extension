@@ -21,11 +21,15 @@ class DropDownView {
     if (special == "perDay") {
       var btn_perDay = new button("Calculate", () => {
         btn_Period_Function(
-          input_hours.value,
-          input_minutes.value
+          input_weeks.value,
+          input_days.value,
+          input_hours.value
         );
       });
-      setTogether(div1, input_hours, input_minutes, ": ");
+      var input_weeks = new inputfield(0,52, "Wochen");
+      var input_days = new inputfield(0,7,"Tage");
+      var input_hours = new inputfield(0,24, "Stunden");
+      setTogether(div1, input_weeks, input_days, "", input_hours);
       div2.append(btn_perDay);
     } else if (special == "isHomeTime") {
       var btn_goHomeTime = new button("Calculate", () => {
