@@ -35,10 +35,32 @@ function getLastTimeOfMonth(){
   var elements = document.querySelectorAll("td[data-c='5'][ondblclick]:not(.td_green)");
   return TimeParser.parseStringToInt(elements[elements.length - 1].textContent);
 }
-function calculateOvertimeForMonth() {
+function getStartAmountOfOvertime(){
   var beginfield = getFirstTimeOfMonth();
   var overtimeBegin = TimeParser.parseStringToInt(document.querySelector('[data-r="0"][data-c="4"]').textContent);
-  var begintime = beginfield-overtimeBegin;
+  return beginfield-overtimeBegin;
+}
+//TODO: Bereits gearbeitete Tage nicht dazu rechnen
+function calculateDailyOvertimeByGoal(goalhours, goalminutes){
+  var row = getTodaysRowInt();
+  var goal = parseInt(goalhours) + (parseInt(goalminutes) / 60);
+  var startOvertime = getStartAmountOfOvertime();
+  var allDays = document.querySelectorAll('td[data-c="2"]:not(:empty), td[data-c="3"]:empty');
+  var x = 0;
+  allDays.forEach(function(day){
+    day.textContent = day.textContent.replace(/\s/g, "")
+    if(day.textContent.length == 4){
+      x++;
+    }
+  })
+  var absencetime = countAbsences();
+  var amountOfDays = (x - (TimeParser.parseStringToInt(absencetime)/8));
+  console.log(amountOfDays);
+  var diff = goal-startOvertime;
+  return TimeParser.parseIntToTime(diff / amountOfDays);
+}
+function calculateOvertimeForMonth() {
+  var begintime = getStartAmountOfOvertime();
   var endfield = getLastTimeOfMonth();
   return TimeParser.parseIntToTime(endfield-begintime)
 }
@@ -156,6 +178,7 @@ function checkForAbsences(){
   });
   return absencetime;
 }
+
 function calculateCurrentOvertime(hours = 17, minutes = 0, pause = 30){
   if(hours == ""){
     hours = 17;

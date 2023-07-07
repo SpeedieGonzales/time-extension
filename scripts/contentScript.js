@@ -164,6 +164,9 @@ function displayPeriodCalculate(begin, end) {
     end
   );
 }
+function displayCalculateOfOvertimePerDay(goalhours, goalminutes){
+  displayInTable(calculateDailyOvertimeByGoal(goalhours, goalminutes), "Overtime per Day:", false);
+}
 function handleAvrageArivalClick() {
   displayInTable(getAvrageArival(false), "Arival", false);
 }

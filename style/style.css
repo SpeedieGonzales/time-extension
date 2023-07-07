@@ -54,17 +54,7 @@
 .table-section {
   height: 100%;
 }
-.normal_input{
-    position: inherit;
-    margin: 0px 0px 0px 0px;
-    padding: 1px 2px;
-    font-family: arial;
-    cursor: default;
-    border-style: inset;
-    display: inline;
-    overflow: hidden;
-    margin-right: 5px;
-}
+
 .content {
   display: none;
   transition: opacity 0.3s ease;
@@ -94,3 +84,39 @@
   .div4 { grid-area: 2 / 2 }  
   .div5 { grid-area: 3 / 1 }
   .div6 { grid-area: 3 / 2 }
+
+  .normal_input {
+    color: black;
+    font-size: 0.9rem;
+    background-color: transparent;
+    box-sizing: border-box;
+    padding-inline: 0.5em;
+    padding-block: 0.7em;
+    border: none;
+    border-bottom: var(--border-height) solid var(--border-before-color);
+    display: inline;
+    overflow: hidden;
+    position: inherit;
+   }
+   /* styling of animated border */
+   .input-border {
+    position: absolute;
+    background: var(--border-after-color);
+    width: 0%;
+    height: 2px;
+    bottom: 0;
+    left: 0;
+    transition: 0.3s;
+   }
+   /* Hover on Input */
+   input:hover {
+    background: var(--input-hovered-color);
+   }
+   
+   input:focus {
+    outline: none;
+   }
+   /* here is code of animated border */
+   input:focus ~ .input-border {
+    width: 100%;
+   }

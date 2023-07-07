@@ -32,6 +32,12 @@ class ContentViews {
         functionMonth: calculateEndtime,
         functionPeriod: displayPeriodCalculate,
         special: "isHomeTime",
+      },      
+      {
+        name: "Overtime per Day",
+        functionMonth: calculateEndtime,
+        functionPeriod: displayCalculateOfOvertimePerDay,
+        special: "perDay",
       },
     ];
 
