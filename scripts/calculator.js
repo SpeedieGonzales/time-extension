@@ -18,8 +18,8 @@ function calculateOvertimeByPeriod(begin, end) {
   return TimeParser.parseIntToTime(endfield - beginfield);
 }
 function getFieldsForPeriod(begin, end, fields) {
-  beginInNumber = parseInt(begin);
-  endInNumber = parseInt(end);
+  beginInNumber = TimeParser.parseStringToInt(begin);
+  endInNumber = TimeParser.parseStringToInt(end);
   var fieldsInRange = [];
   fields.forEach(function (field, index) {
     if (
@@ -56,8 +56,19 @@ function getTodaysOvertimeValue(){
   var currentOvertime =  document.querySelector(`td[data-r='${row}'][data-c="5"]:not(:empty)`).textContent;
   return TimeParser.parseStringToInt(currentOvertime);
 }
+function calculateHowManyDaysForOvertime(goalOvertime, OvertimeHours, OvertimeMinutes, WithCurrent){
+  var goal = parseInt(goalOvertime);
+  if(WithCurrent){
+    var overtime = getTodaysOvertimeValue();
+    console.log(overtime);
+    goal = goal - overtime;
+  }
+  OvertimePerDay = parseInt(OvertimeHours) + (parseInt(OvertimeMinutes)/60);
+  var AmountOfDays = goal / OvertimePerDay;
+  return Math.round(AmountOfDays);
+}
 function calculateDailyOvertimeByGoal(week, days, hour, withCurrentOvertime) {
-  var hours = parseInt(hour) + (parseInt(days)*8)+((parseInt(week) * 5)*8)
+  var hours = TimeParser.parseStringToInt(hour) + (TimeParser.parseStringToInt(days)*8)+((TimeParser.parseStringToInt(week) * 5)*8)
   var todaysOvertime = calculateCurrentOvertime();
   hours = hours - TimeParser.parseStringToInt(todaysOvertime);
   var startOvertime = getTodaysOvertimeValue();
@@ -249,6 +260,7 @@ function calculateCurrentOvertime(hours = 17, minutes = 0, pause = 30) {
   return TimeParser.parseIntToTime(currentOvertime);
 }
 function formatTime(time) {
+  if (":" in time){
   var parts = time.split(":");
   var hours = parts[0];
   var minutes = parts[1];
@@ -259,4 +271,5 @@ function formatTime(time) {
     minutes = "0" + minutes;
   }
   return hours + ":" + minutes;
+  }
 }

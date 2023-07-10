@@ -18,7 +18,31 @@ class DropDownView {
     var input_minutes = new inputfield(0, 60, "Minutes");
     var input_calculateBegin = new inputfield(0, 31, "Start by Day");
     var input_calculateEnd = new inputfield(0, 31, "End by Day");
-    if (special == "perDay") {
+    if(special == "amountOfDays"){
+      var btn_amountOfDays = new button("Calculate without", () => {
+        btn_Period_Function(
+          input_goal.value,
+          input_hours.value,
+          input_minutes.value,
+          false
+        );
+      });
+      var btn_amountOfDays2 = new button("Calculate with", () => {
+        btn_Period_Function(
+          input_goal.value,
+          input_hours.value,
+          input_minutes.value,
+          true
+        );
+      });
+      var input_goal = new inputfield(0,52, "Goal");
+      var input_hours = new inputfield(0,24,"Hours");
+      var input_minutes = new inputfield(0,60,"Minutes");
+      setTogether(div1, input_hours, input_minutes,": ",input_goal);
+      div3.append(btn_amountOfDays);
+      div3.append(btn_amountOfDays2);
+    }
+    else if (special == "perDay") {
       var btn_perDay = new button("Calculate without", () => {
         btn_Period_Function(
           input_weeks.value,

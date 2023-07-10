@@ -118,20 +118,32 @@ function openTab(tabID) {
   }
   currentTab.classList.add("active");
 }
-function displayInTable(Value, type, IsPeriod, begin = 0, end = 0) {
+function displayInTable(
+  Value,
+  type,
+  IsPeriod,
+  begin = 0,
+  end = 0,
+  amountDays = false
+) {
   var month = "";
-  if(Array.isArray(Value)){
-    month = Value[1] + " Days";
-    Value = Value[0];
-  }else{
-    Value = formatTime(Value);
-    month = document.querySelector(
-      'th[data-r="0"][data-c="1"][class="td_blue "]'
-    ).textContent;
+  if (!amountDays) {
+    if (Array.isArray(Value)) {
+      month = Value[1] + " Days";
+      Value = Value[0];
+    } else {
+      Value = formatTime(Value);
+      month = document.querySelector(
+        'th[data-r="0"][data-c="1"][class="td_blue "]'
+      ).textContent;
+    }
   }
   const row = document.createElement("tr");
   const labelCell = document.createElement("td");
-  if (IsPeriod) {
+  if(amountDays){
+    labelCell.innerHTML = type;
+  }
+  else if (IsPeriod) {
     labelCell.innerHTML =
       type + " from <strong>" + begin + " - " + end + "" + month + "</strong>";
   } else {
@@ -149,17 +161,25 @@ function displayInTable(Value, type, IsPeriod, begin = 0, end = 0) {
 function amountOfAbsences() {
   displayInTable(countAbsences(false), "Absencetime", false);
 }
-function periodOfAbsences(begin, end){
+function periodOfAbsences(begin, end) {
   displayInTable(countAbsences(true, begin, end), "Absencetime", false);
 }
 function displayMonthCalculate() {
   displayInTable(calculateOvertimeForMonth(), "Overtime", false);
 }
-function displayCurrentOvertime(){
+function displayCurrentOvertime() {
   displayInTable(calculateCurrentOvertime(), "Expected Overtime", false);
 }
-function displayCurrentOvertimeWithSpecificValues(hours = 0, minutes = 0, pause = 0){
-  displayInTable(calculateCurrentOvertime(hours, minutes, pause), "Expected Overtime", false);
+function displayCurrentOvertimeWithSpecificValues(
+  hours = 0,
+  minutes = 0,
+  pause = 0
+) {
+  displayInTable(
+    calculateCurrentOvertime(hours, minutes, pause),
+    "Expected Overtime",
+    false
+  );
 }
 function displayPeriodCalculate(begin, end) {
   displayInTable(
@@ -170,22 +190,57 @@ function displayPeriodCalculate(begin, end) {
     end
   );
 }
-function displayCalculateOfOvertimePerDay(weeks, days , hours, withCurrentOvertime){
-  if(weeks.length == 0){
+function displayAmountOfDaysForOvertime(
+  goalOvertime,
+  OvertimeHours,
+  OvertimeMinutes,
+  withCurrentOvertime
+) {
+  if (OvertimeHours.length == 0) {
+    OvertimeHours = 0;
+  }
+  if (OvertimeMinutes.length == 0) {
+    OvertimeMinutes = 0;
+  }
+  displayInTable(
+    calculateHowManyDaysForOvertime(
+      goalOvertime,
+      OvertimeHours,
+      OvertimeMinutes,
+      withCurrentOvertime
+    ),
+    "It take this amount of Days:",
+    false,
+    0,
+    0,
+    true
+  );
+}
+function displayCalculateOfOvertimePerDay(
+  weeks,
+  days,
+  hours,
+  withCurrentOvertime
+) {
+  if (weeks.length == 0) {
     weeks = 0;
   }
-  if(days.length == 0){
+  if (days.length == 0) {
     days = 0;
   }
-  if(hours.length == 0){
+  if (hours.length == 0) {
     hours = 0;
   }
-  displayInTable(calculateDailyOvertimeByGoal(weeks, days,hours, withCurrentOvertime), "Overtime per Day ", false);
+  displayInTable(
+    calculateDailyOvertimeByGoal(weeks, days, hours, withCurrentOvertime),
+    "Overtime per Day ",
+    false
+  );
 }
 function handleAvrageArivalClick() {
   displayInTable(getAvrageArival(false), "Arival", false);
 }
-function periodAverageArival(begin, end){
+function periodAverageArival(begin, end) {
   displayInTable(getAvrageArival(true, begin, end), "Arival", false);
 }
 function handleToggleEditClick() {

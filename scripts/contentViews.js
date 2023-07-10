@@ -39,6 +39,12 @@ class ContentViews {
         functionPeriod: displayCalculateOfOvertimePerDay,
         special: "perDay",
       },
+      {
+        name: "Amount of Days for Overtime",
+        functionMonth: displayAmountOfDaysForOvertime,
+        functionPeriod: displayAmountOfDaysForOvertime,
+        special: "amountOfDays",
+      },
     ];
 
     this.createFirstOption();
