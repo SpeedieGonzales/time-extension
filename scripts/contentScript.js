@@ -170,7 +170,7 @@ function displayPeriodCalculate(begin, end) {
     end
   );
 }
-function displayCalculateOfOvertimePerDay(weeks, days , hours){
+function displayCalculateOfOvertimePerDay(weeks, days , hours, withCurrentOvertime){
   if(weeks.length == 0){
     weeks = 0;
   }
@@ -180,7 +180,7 @@ function displayCalculateOfOvertimePerDay(weeks, days , hours){
   if(hours.length == 0){
     hours = 0;
   }
-  displayInTable(calculateDailyOvertimeByGoal(weeks, days,hours), "Overtime per Day ", false);
+  displayInTable(calculateDailyOvertimeByGoal(weeks, days,hours, withCurrentOvertime), "Overtime per Day ", false);
 }
 function handleAvrageArivalClick() {
   displayInTable(getAvrageArival(false), "Arival", false);

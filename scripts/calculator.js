@@ -56,12 +56,16 @@ function getTodaysOvertimeValue(){
   var currentOvertime =  document.querySelector(`td[data-r='${row}'][data-c="5"]:not(:empty)`).textContent;
   return TimeParser.parseStringToInt(currentOvertime);
 }
-function calculateDailyOvertimeByGoal(week, days, hour) {
+function calculateDailyOvertimeByGoal(week, days, hour, withCurrentOvertime) {
   var hours = parseInt(hour) + (parseInt(days)*8)+((parseInt(week) * 5)*8)
   var todaysOvertime = calculateCurrentOvertime();
   hours = hours - TimeParser.parseStringToInt(todaysOvertime);
   var startOvertime = getTodaysOvertimeValue();
-  var goal = startOvertime + hours;
+  if(withCurrentOvertime){
+    var goal = hours;
+  }else{
+    var goal = startOvertime + hours;
+  }
   var allDays = document.querySelectorAll(
     `td[data-c="2"]:not(:empty), td[data-c="3"]:empty`
   );

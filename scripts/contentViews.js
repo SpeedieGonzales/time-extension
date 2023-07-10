@@ -35,7 +35,7 @@ class ContentViews {
       },      
       {
         name: "Overtime per Day",
-        functionMonth: calculateEndtime,
+        functionMonth: displayCalculateOfOvertimePerDay,
         functionPeriod: displayCalculateOfOvertimePerDay,
         special: "perDay",
       },

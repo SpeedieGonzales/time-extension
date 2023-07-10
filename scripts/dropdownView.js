@@ -19,18 +19,28 @@ class DropDownView {
     var input_calculateBegin = new inputfield(0, 31, "Start by Day");
     var input_calculateEnd = new inputfield(0, 31, "End by Day");
     if (special == "perDay") {
-      var btn_perDay = new button("Calculate", () => {
+      var btn_perDay = new button("Calculate without", () => {
         btn_Period_Function(
           input_weeks.value,
           input_days.value,
-          input_hours.value
+          input_hours.value,
+          false
+        );
+      });
+      var btn_perDay2 = new button("Calculate with", () => {
+        btn_Period_Function(
+          input_weeks.value,
+          input_days.value,
+          input_hours.value,
+          true
         );
       });
       var input_weeks = new inputfield(0,52, "Wochen");
       var input_days = new inputfield(0,7,"Tage");
       var input_hours = new inputfield(0,24, "Stunden");
       setTogether(div1, input_weeks, input_days, "", input_hours);
-      div2.append(btn_perDay);
+      div3.append(btn_perDay);
+      div3.append(btn_perDay2);
     } else if (special == "isHomeTime") {
       var btn_goHomeTime = new button("Calculate", () => {
         var time = btn_Month_Function(
