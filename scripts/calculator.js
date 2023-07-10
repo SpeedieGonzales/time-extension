@@ -51,9 +51,16 @@ function getStartAmountOfOvertime() {
   );
   return beginfield - overtimeBegin;
 }
+function getTodaysOvertimeValue(){
+  var row = getTodaysRowInt();
+  var currentOvertime =  document.querySelector(`td[data-r='${row}'][data-c="5"]:not(:empty)`).textContent;
+  return TimeParser.parseStringToInt(currentOvertime);
+}
 function calculateDailyOvertimeByGoal(week, days, hour) {
   var hours = parseInt(hour) + (parseInt(days)*8)+((parseInt(week) * 5)*8)
-  var startOvertime = getStartAmountOfOvertime();
+  var todaysOvertime = calculateCurrentOvertime();
+  hours = hours - TimeParser.parseStringToInt(todaysOvertime);
+  var startOvertime = getTodaysOvertimeValue();
   var goal = startOvertime + hours;
   var allDays = document.querySelectorAll(
     `td[data-c="2"]:not(:empty), td[data-c="3"]:empty`
@@ -80,7 +87,7 @@ function calculateDailyOvertimeByGoal(week, days, hour) {
     }
   }
   var absencetime = countAbsences(true, allDays[y].getAttribute("data-r"), lastElement.getAttribute("data-r"));
-  var amountOfDays = x - TimeParser.parseStringToInt(absencetime) / 8;
+  var amountOfDays = x - TimeParser.parseStringToInt(absencetime) / 8 - 1;
   var diff = goal - startOvertime;
   var solution = [TimeParser.parseIntToTime(diff / amountOfDays), amountOfDays]
   return solution;
