@@ -8,18 +8,21 @@ class DropDownView {
   ) {
     var fieldsetElement = document.createElement("fieldset");
     var legendElement = document.createElement("legend");
-    var parent = createDiv("parent");
+    var parent = new Div("parent", "parent");
 
-    var div1 = createDiv("div1");
-    var div2 = createDiv("div2");
-    var div3 = createDiv("div3");
-    var div4 = createDiv("div4");
-    var input_hours = new inputfield(0, 24, "Hours");
-    var input_minutes = new inputfield(0, 60, "Minutes");
-    var input_calculateBegin = new inputfield(0, 31, "Start by Day");
-    var input_calculateEnd = new inputfield(0, 31, "End by Day");
-    if(special == "amountOfDays"){
-      var btn_amountOfDays = new button("Calculate without", () => {
+    var div_upLeft = new Div("div_upLeft", "div1");
+    var div_upRight = new Div("div_upRight", "div2");
+    var div_downLeft = new Div("div_downLeft", "div3");
+    var div_downRight = new Div("div_downRight", "div4");
+    var input_hours = new Inputfield(0, 24, "Hours");
+    var input_minutes = new Inputfield(0, 60, "Minutes");
+    var input_calculateBegin = new Inputfield(0, 31, "Start by Day");
+    var input_calculateEnd = new Inputfield(0, 31, "End by Day");
+    var input_goal = new Inputfield(0,52, "Goal");
+    if(special == "amountOfDays" || special == "perDay"){
+      if(special == "amountOfDays"){
+      setTogether(div_upLeft, input_hours, input_minutes,": ",input_goal);
+      var btn_calcWithout = new Button("Calculate without", () => {
         btn_Period_Function(
           input_goal.value,
           input_hours.value,
@@ -27,7 +30,7 @@ class DropDownView {
           false
         );
       });
-      var btn_amountOfDays2 = new button("Calculate with", () => {
+      var btn_calcWith = new Button("Calculate with", () => {
         btn_Period_Function(
           input_goal.value,
           input_hours.value,
@@ -35,15 +38,12 @@ class DropDownView {
           true
         );
       });
-      var input_goal = new inputfield(0,52, "Goal");
-      var input_hours = new inputfield(0,24,"Hours");
-      var input_minutes = new inputfield(0,60,"Minutes");
-      setTogether(div1, input_hours, input_minutes,": ",input_goal);
-      div3.append(btn_amountOfDays);
-      div3.append(btn_amountOfDays2);
-    }
-    else if (special == "perDay") {
-      var btn_perDay = new button("Calculate without", () => {
+      }else{
+        var input_weeks = new Inputfield(0,52, "Wochen");
+      var input_days = new Inputfield(0,7,"Tage");
+      var input_hours = new Inputfield(0,24, "Stunden");
+      setTogether(div_upLeft, input_weeks, input_days, "", input_hours);
+      var btn_calcWithout = new Button("Calculate without", () => {
         btn_Period_Function(
           input_weeks.value,
           input_days.value,
@@ -51,7 +51,7 @@ class DropDownView {
           false
         );
       });
-      var btn_perDay2 = new button("Calculate with", () => {
+      var btn_calcWith = new Button("Calculate with", () => {
         btn_Period_Function(
           input_weeks.value,
           input_days.value,
@@ -59,52 +59,45 @@ class DropDownView {
           true
         );
       });
-      var input_weeks = new inputfield(0,52, "Wochen");
-      var input_days = new inputfield(0,7,"Tage");
-      var input_hours = new inputfield(0,24, "Stunden");
-      setTogether(div1, input_weeks, input_days, "", input_hours);
-      div3.append(btn_perDay);
-      div3.append(btn_perDay2);
+      }
+      div_downLeft.append(btn_calcWithout);
+      div_downLeft.append(btn_calcWith);
     } else if (special == "isHomeTime") {
-      var btn_goHomeTime = new button("Calculate", () => {
+      var btn_goHomeTime = new Button("Calculate", () => {
         var time = btn_Month_Function(
           parseInt(input_hours.value),
           parseInt(input_minutes.value)
         );
         goHomeTimeValue.textContent = time;
       });
-      var goHomeTime = document.createElement("h3");
-      var goHomeTimeValue = document.createElement("h3");
-      goHomeTimeValue.textContent = "00:00";
-      goHomeTimeValue.style.textAlign = "center";
-      goHomeTime.textContent = "Um ";
-      goHomeTime.style.textAlign = "center";
-      div1.appendChild(goHomeTime);
-      div2.appendChild(goHomeTimeValue);
-      setTogether(div3, input_hours, input_minutes, ": ");
-      div4.appendChild(btn_goHomeTime);
+      var goHomeTime = new H3("Um ", "center");
+      var goHomeTimeValue = new H3("00:00", "center");
+      div_upLeft.appendChild(goHomeTime);
+      div_upRight.appendChild(goHomeTimeValue);
+      setTogether(div_downLeft, input_hours, input_minutes, ": ");
+      div_downRight.appendChild(btn_goHomeTime);
     } else {
-      var btn_Current = new button("Period", () => {
+      var btn_Current = new Button("Period", () => {
         btn_Period_Function(
           input_calculateBegin.value,
           input_calculateEnd.value
         );
       });
-      var btn_Month = new button("Month", btn_Month_Function);
+      var btn_Month = new Button("Month", btn_Month_Function);
       if (special == "currentOvertime") {
-        input_calculateBegin = new inputfield(0, 31, "Leave Hour");
-        input_calculateEnd = new inputfield(0, 31, "Leave Minute");
-        var input_pauseTime = new inputfield(0, 60, "Breaktime");
+        input_calculateBegin = new Inputfield(0, 31, "Leave Hour");
+        input_calculateEnd = new Inputfield(0, 31, "Leave Minute");
+        var input_pauseTime = new Inputfield(0, 60, "Breaktime");
         btn_Month.textContent = "Normal";
         btn_Current.textContent = "Specified";
         setTogether(
-          div1,
+          div_upLeft,
           input_calculateBegin,
           input_calculateEnd,
           ": ",
           input_pauseTime
         );
-        btn_Current = new button("Period", () => {
+        btn_Current = new Button("Period", () => {
           btn_Period_Function(
             input_calculateBegin.value,
             input_calculateEnd.value,
@@ -112,15 +105,15 @@ class DropDownView {
           )
         });
       } else {
-        setTogether(div1, input_calculateBegin, input_calculateEnd, "- ");
+        setTogether(div_upLeft, input_calculateBegin, input_calculateEnd, "- ");
       }
-      div2.appendChild(btn_Current);
-      div4.appendChild(btn_Month);
+      div_upRight.appendChild(btn_Current);
+      div_downRight.appendChild(btn_Month);
     }
-    parent.appendChild(div1);
-    parent.appendChild(div2);
-    parent.appendChild(div3);
-    parent.appendChild(div4);
+    parent.appendChild(div_upLeft);
+    parent.appendChild(div_upRight);
+    parent.appendChild(div_downLeft);
+    parent.appendChild(div_downRight);
 
     legendElement.textContent = title;
     fieldsetElement.appendChild(legendElement);

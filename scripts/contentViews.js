@@ -30,7 +30,7 @@ class ContentViews {
       {
         name: "GoHomeTime",
         functionMonth: calculateEndtime,
-        functionPeriod: displayPeriodCalculate,
+        functionPeriod: "",
         special: "isHomeTime",
       },      
       {

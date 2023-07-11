@@ -1,16 +1,17 @@
-const btn_open = document.createElement("button");
-const popup = document.createElement("div");
+const btn_open = new MenuButton(`url('${chrome.runtime.getURL("img/open.png")}')`, ["blank", "position-fixed"], showPopup);
+const popup = new Div("popup", "position-fixed");
 
 const headSection = document.createElement("section");
-const btn_close = document.createElement("button");
+const btn_close = new MenuButton(`url('${chrome.runtime.getURL("img/close.png")}')`, ["blank"], handleCloseClick);
 
 const buttonSection = document.createElement("section");
 
-const btn_toggleEdit = document.createElement("button");
-const tableSection = document.createElement("section");
 const table = document.createElement("table");
+const tableSection = document.createElement("section");
 
 const selectElement = document.createElement("select");
+
+const btn_toggleEdit = new MenuButton("Editable", ["tablinks"], handleToggleEditClick, 2)
 
 var currentTab = "";
 
@@ -19,13 +20,6 @@ openPopup();
 dragElement(popup);
 
 function initPopup() {
-  btn_open.classList.add("btn");
-  btn_open.classList.add("blank");
-  btn_open.classList.add("position-fixed");
-  btn_open.style.backgroundImage = `url('${chrome.runtime.getURL(
-    "img/open.png"
-  )}')`;
-  btn_open.addEventListener("click", showPopup);
 
   popup.id = "popup";
   popup.classList.add("position-fixed");
@@ -35,13 +29,9 @@ function initPopup() {
     "img/icon/icon16.png"
   )}')`;
 
-  btn_close.classList.add("btn");
-  btn_close.classList.add("blank");
-  btn_close.style.backgroundImage = `url('${chrome.runtime.getURL(
-    "img/close.png"
-  )}')`;
-  btn_close.addEventListener("click", handleCloseClick);
-
+  btn_toggleEdit.addEventListener("click", function () {
+    openTab(2);
+  });
   buttonSection.classList.add("section");
   buttonSection.classList.add("tab");
 
@@ -50,16 +40,6 @@ function initPopup() {
   table.id = "ContentTable";
 
   headSection.appendChild(btn_close);
-
-  buttonSection.appendChild(btn_toggleEdit);
-  btn_toggleEdit.textContent = "Editable";
-  btn_toggleEdit.id = 2;
-  btn_toggleEdit.classList.add("btn");
-  btn_toggleEdit.classList.add("tablinks");
-  btn_toggleEdit.addEventListener("click", function () {
-    openTab(2);
-  });
-  btn_toggleEdit.addEventListener("click", handleToggleEditClick);
 
   buttonSection.appendChild(btn_toggleEdit);
   initDropdown();
@@ -117,134 +97,6 @@ function openTab(tabID) {
     tableSection.appendChild(table);
   }
   currentTab.classList.add("active");
-}
-function displayInTable(
-  Value,
-  type,
-  IsPeriod,
-  begin = 0,
-  end = 0,
-  amountDays = false
-) {
-  var month = "";
-  if (!amountDays) {
-    if (Array.isArray(Value)) {
-      month = Value[1] + " Days";
-      Value = Value[0];
-    } else {
-      Value = formatTime(Value);
-      month = document.querySelector(
-        'th[data-r="0"][data-c="1"][class="td_blue "]'
-      ).textContent;
-    }
-  }
-  const row = document.createElement("tr");
-  const labelCell = document.createElement("td");
-  if(amountDays){
-    labelCell.innerHTML = type;
-  }
-  else if (IsPeriod) {
-    labelCell.innerHTML =
-      type + " from <strong>" + begin + " - " + end + "" + month + "</strong>";
-  } else {
-    labelCell.innerHTML = type + " in <strong>" + month + "</strong>";
-  }
-  const timeCell = document.createElement("td");
-  timeCell.style.textAlign = "right";
-  timeCell.textContent = Value;
-
-  row.appendChild(labelCell);
-  row.appendChild(timeCell);
-  table.appendChild(row);
-}
-
-function amountOfAbsences() {
-  displayInTable(countAbsences(false), "Absencetime", false);
-}
-function periodOfAbsences(begin, end) {
-  displayInTable(countAbsences(true, begin, end), "Absencetime", false);
-}
-function displayMonthCalculate() {
-  displayInTable(calculateOvertimeForMonth(), "Overtime", false);
-}
-function displayCurrentOvertime() {
-  displayInTable(calculateCurrentOvertime(), "Expected Overtime", false);
-}
-function displayCurrentOvertimeWithSpecificValues(
-  hours = 0,
-  minutes = 0,
-  pause = 0
-) {
-  displayInTable(
-    calculateCurrentOvertime(hours, minutes, pause),
-    "Expected Overtime",
-    false
-  );
-}
-function displayPeriodCalculate(begin, end) {
-  displayInTable(
-    calculateOvertimeByPeriod(begin, end),
-    "Overtime",
-    true,
-    begin,
-    end
-  );
-}
-function displayAmountOfDaysForOvertime(
-  goalOvertime,
-  OvertimeHours,
-  OvertimeMinutes,
-  withCurrentOvertime
-) {
-  if (OvertimeHours.length == 0) {
-    OvertimeHours = 0;
-  }
-  if (OvertimeMinutes.length == 0) {
-    OvertimeMinutes = 0;
-  }
-  displayInTable(
-    calculateHowManyDaysForOvertime(
-      goalOvertime,
-      OvertimeHours,
-      OvertimeMinutes,
-      withCurrentOvertime
-    ),
-    "It take this amount of Days:",
-    false,
-    0,
-    0,
-    true
-  );
-}
-function displayCalculateOfOvertimePerDay(
-  weeks,
-  days,
-  hours,
-  withCurrentOvertime
-) {
-  if (weeks.length == 0) {
-    weeks = 0;
-  }
-  if (days.length == 0) {
-    days = 0;
-  }
-  if (hours.length == 0) {
-    hours = 0;
-  }
-  displayInTable(
-    calculateDailyOvertimeByGoal(weeks, days, hours, withCurrentOvertime),
-    "Overtime per Day ",
-    false
-  );
-}
-function handleAvrageArivalClick() {
-  displayInTable(getAvrageArival(false), "Arival", false);
-}
-function periodAverageArival(begin, end) {
-  displayInTable(getAvrageArival(true, begin, end), "Arival", false);
-}
-function handleToggleEditClick() {
-  toggleContentEditableOfArivalTimes();
 }
 
 function toggleContentEditableOfArivalTimes() {
