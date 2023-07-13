@@ -32,8 +32,7 @@ function initPopup() {
   btn_toggleEdit.addEventListener("click", function () {
     openTab(2);
   });
-  buttonSection.classList.add("section");
-  buttonSection.classList.add("tab");
+  buttonSection.classList.add("section", "tab");
 
   tableSection.classList.add("section", "table-section");
 
