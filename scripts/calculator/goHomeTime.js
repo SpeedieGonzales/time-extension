@@ -8,7 +8,8 @@ function calculateEndtime(hours, minutes) {
   if(isNaN(minutes)){
     minutes = 0;
   }
-    var timeStamps = getTodaysTimeStamps();
+  var todaysRow = getTodaysRowInt();
+    var timeStamps = getTimeStampsByRow(todaysRow);
     var times = getTimesFromTimeStamp(timeStamps);
     var endTime = 0;
     let timeSum = 0;

@@ -52,8 +52,7 @@ function getFieldsForPeriod(begin, end, fields) {
     });
     return value;
   }
-  function getTodaysTimeStamps() {
-    var todaysRow = getTodaysRowInt();
+  function getTimeStampsByRow(todaysRow) {
     var fields = document.querySelectorAll(`td[data-r='${todaysRow}'][data-c]`);
     var array = Array.from(fields);
     array.splice(0, 8);

@@ -12,6 +12,7 @@ const tableSection = document.createElement("section");
 const selectElement = document.createElement("select");
 
 const btn_toggleEdit = new MenuButton("Editable", ["tablinks"], handleToggleEditClick, 2)
+const btn_fillDatabase = new MenuButton("FillDatabase", ["tablinks"], Api.filldatabaseWithMonth)
 
 var currentTab = "";
 
@@ -41,6 +42,7 @@ function initPopup() {
   headSection.appendChild(btn_close);
 
   buttonSection.appendChild(btn_toggleEdit);
+  buttonSection.appendChild(btn_fillDatabase);
   initDropdown();
 
   tableSection.appendChild(table);

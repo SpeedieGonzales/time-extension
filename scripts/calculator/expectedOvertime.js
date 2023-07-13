@@ -12,7 +12,8 @@ function calculateCurrentOvertime(hours = 17, minutes = 0, pause = 30) {
     minutes = parseInt(minutes);
     var leaveTime = hours + minutes / 60;
     var fulltime = 8;
-    var timeStamps = getTodaysTimeStamps();
+    var todaysRow = getTodaysRowInt();
+    var timeStamps = getTimeStampsByRow(todaysRow);
     var times = getTimesFromTimeStamp(timeStamps);
     let timeSum = 0;
     times.forEach((time) => {

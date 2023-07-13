@@ -2,12 +2,20 @@ import os
 
 def list_files(directory):
     file_list = []
+    content_script_file = 'scripts/contentScript.js'
+
     for root, dirs, files in os.walk(directory):
         for file in files:
             file_path = os.path.join(root, file)
             file_path = file_path.replace("\\", "/")  # Ersetze "\" durch "/"
-            file_list.append(f'"{file_path}"')  # Pfade als Strings speichern
+            
+            if file_path != content_script_file:
+                file_list.append(f'"{file_path}"')  # Pfade als Strings speichern
+    
+    file_list.append(f'"{content_script_file}"')  # Füge contentScript.js am Ende hinzu
+    
     return file_list
+
 
 def replace_files_in_backgroundjs(backgroundjs_file, file_list):
     with open(backgroundjs_file, 'r') as f:

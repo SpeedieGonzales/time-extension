@@ -13,9 +13,7 @@ class MenuButton{
         MenuButton.classList.add(classe);
       });
       MenuButton.classList.add("btn");
-      MenuButton.addEventListener("click", function () {
-        btn_function;
-      });
+      MenuButton.addEventListener("click", btn_function);
       return MenuButton;
     }
   }
