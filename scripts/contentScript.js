@@ -61,6 +61,7 @@ function initPopup() {
   btn_toggleEdit.addEventListener("click", function () {
     openTab(2);
   });
+  btn_login.style.marginLeft = '5px';
   buttonSection.classList.add("section", "tab");
 
   tableSection.classList.add("section", "table-section");
