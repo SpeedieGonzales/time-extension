@@ -150,13 +150,22 @@ class Api {
           xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
         },
         success: function(response) {
+          tableSection.innerHTML = "";
           token = response['key'];
+          btn_login.textContent = "Logout";
+          btn_login.removeEventListener('click', () => { Api.login(usernameInput.value, passwordInput.value)});
+          btn_login.addEventListener('click', Api.logout);  
           console.log('Login erfolgreich:', response);
         },
         error: function(xhr, textStatus, errorThrown) {
           console.error('Fehler beim Login:', errorThrown);
         }
       });
-      
-}
+    }
+    static logout(){
+      token = "";
+      btn_login.textContent = "Login";
+      btn_login.removeEventListener('click', Api.logout); 
+      btn_login.addEventListener('click', () => { Api.login(usernameInput.value, passwordInput.value)});
+    }
 }

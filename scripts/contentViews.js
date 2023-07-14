@@ -32,7 +32,7 @@ class ContentViews {
         functionMonth: calculateEndtime,
         functionPeriod: "",
         special: "isHomeTime",
-      },      
+      },
       {
         name: "Overtime per Day",
         functionMonth: displayCalculateOfOvertimePerDay,
@@ -50,7 +50,6 @@ class ContentViews {
     this.createFirstOption();
     this.createContentViews();
   }
-
   createFirstOption() {
     const option = document.createElement("option");
     option.text = "Calculator";

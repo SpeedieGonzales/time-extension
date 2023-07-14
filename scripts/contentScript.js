@@ -30,7 +30,9 @@ const btn_fillDatabase = new MenuButton(
   ["tablinks"],
   Api.filldatabaseWithMonth
 );
-const btn_login = new MenuButton("Login", ["tablinks"], createLoginForm(tableSection),3);
+const btn_login = new MenuButton("Login", ["tablinks"], function () {
+  openTab(3);
+}, 3);
 
 var currentTab = "";
 
@@ -38,6 +40,15 @@ initPopup();
 openPopup();
 dragElement(popup);
 
+function initlogInform() {
+  var content = document.createElement("aside");
+  var contentValue = document.createElement("aside");
+  new DropDownView("Login", "", "", contentValue, "login");
+  content.id = `content01`;
+  content.classList.add("content");
+  content.appendChild(contentValue);
+  tableSection.appendChild(content);
+}
 function initPopup() {
   popup.id = "popup";
   popup.classList.add("position-fixed");
@@ -50,9 +61,6 @@ function initPopup() {
   btn_toggleEdit.addEventListener("click", function () {
     openTab(2);
   });
-  btn_login.addEventListener("click", function () {
-    openTab(3);
-  });
   buttonSection.classList.add("section", "tab");
 
   tableSection.classList.add("section", "table-section");
@@ -62,10 +70,10 @@ function initPopup() {
   headSection.appendChild(btn_close);
 
   buttonSection.appendChild(btn_toggleEdit);
-  buttonSection.appendChild(btn_login);
   buttonSection.appendChild(btn_fillDatabase);
   initDropdown();
-
+  initlogInform();
+  buttonSection.appendChild(btn_login);
   tableSection.appendChild(table);
 
   popup.appendChild(headSection);
@@ -108,17 +116,21 @@ function handleCloseClick(element, event) {
 
 function openTab(tabID) {
   var tablinks = document.getElementsByClassName("tablinks");
-  console.log(tabID);
   Array.from(tablinks).forEach(function (tablink) {
     tablink.className = tablink.className.replace(" active", "");
   });
   var currentTabByID = document.getElementById(tabID);
   if (currentTab.id != tabID || currentTab.length == 0) {
     table.innerHTML = "";
-    currentTab = currentTabByID;
-    if(tabID == 3){
-      createLoginForm(tableSection)
+    if (tabID == 3) {
+      var contentElements = document.getElementsByClassName("content");
+      for (var i = 0; i < contentElements.length; i++) {
+        contentElements[i].classList.remove("active");
+      }
+      document.getElementById("content01").classList.add("active");
+      return;
     }
+    currentTab = currentTabByID;
     tableSection.innerHTML = "";
     tableSection.appendChild(table);
   }

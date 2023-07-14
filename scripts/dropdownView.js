@@ -62,7 +62,14 @@ class DropDownView {
       }
       div_downLeft.append(btn_calcWithout);
       div_downLeft.append(btn_calcWith);
-    } else if (special == "isHomeTime") {
+    } else if (special == "login"){
+      var usernameInput = new Inputfield("text", "Username");
+      var passwordInput = new Inputfield("password", "Password");
+      var loginButton = new Button("Login", () => { Api.login(usernameInput.value, passwordInput.value)})
+    
+      setTogether(div_upLeft, usernameInput, passwordInput, " ");
+      div_upRight.appendChild(loginButton);
+    }else if (special == "isHomeTime") {
       var btn_goHomeTime = new Button("Calculate", () => {
         var time = btn_Month_Function(
           parseInt(input_hours.value),
