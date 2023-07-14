@@ -14,11 +14,11 @@ class DropDownView {
     var div_upRight = new Div("div_upRight", "div2");
     var div_downLeft = new Div("div_downLeft", "div3");
     var div_downRight = new Div("div_downRight", "div4");
-    var input_hours = new Inputfield(0, 24, "Hours");
-    var input_minutes = new Inputfield(0, 60, "Minutes");
-    var input_calculateBegin = new Inputfield(0, 31, "Start by Day");
-    var input_calculateEnd = new Inputfield(0, 31, "End by Day");
-    var input_goal = new Inputfield(0,52, "Goal");
+    var input_hours = new Inputfield("number", "Hours",0, 24);
+    var input_minutes = new Inputfield("number","Minutes", 0, 60);
+    var input_calculateBegin = new Inputfield("number", "Start by Day",0, 31,);
+    var input_calculateEnd = new Inputfield("number","End by Day", 0, 31, );
+    var input_goal = new Inputfield("number","Goal",0,52);
     if(special == "amountOfDays" || special == "perDay"){
       if(special == "amountOfDays"){
       setTogether(div_upLeft, input_hours, input_minutes,": ",input_goal);
@@ -39,9 +39,9 @@ class DropDownView {
         );
       });
       }else{
-        var input_weeks = new Inputfield(0,52, "Wochen");
-      var input_days = new Inputfield(0,7,"Tage");
-      var input_hours = new Inputfield(0,24, "Stunden");
+        var input_weeks = new Inputfield("number" ,"Wochen",0,52, );
+      var input_days = new Inputfield("number", "Tage",0,7);
+      var input_hours = new Inputfield("number","Stunden",0,24);
       setTogether(div_upLeft, input_weeks, input_days, "", input_hours);
       var btn_calcWithout = new Button("Calculate without", () => {
         btn_Period_Function(
@@ -85,9 +85,9 @@ class DropDownView {
       });
       var btn_Month = new Button("Month", btn_Month_Function);
       if (special == "currentOvertime") {
-        input_calculateBegin = new Inputfield(0, 31, "Leave Hour");
-        input_calculateEnd = new Inputfield(0, 31, "Leave Minute");
-        var input_pauseTime = new Inputfield(0, 60, "Breaktime");
+        input_calculateBegin = new Inputfield("number", "Leave Hour",0, 31);
+        input_calculateEnd = new Inputfield("number", "Leave Minute",0, 31);
+        var input_pauseTime = new Inputfield("number", "Breaktime",0, 60);
         btn_Month.textContent = "Normal";
         btn_Current.textContent = "Specified";
         setTogether(

@@ -1,8 +1,16 @@
-const btn_open = new MenuButton(`url('${chrome.runtime.getURL("img/open.png")}')`, ["blank", "position-fixed"], showPopup);
+const btn_open = new MenuButton(
+  `url('${chrome.runtime.getURL("img/open.png")}')`,
+  ["blank", "position-fixed"],
+  showPopup
+);
 const popup = new Div("popup", "position-fixed");
 
 const headSection = document.createElement("section");
-const btn_close = new MenuButton(`url('${chrome.runtime.getURL("img/close.png")}')`, ["blank"], handleCloseClick);
+const btn_close = new MenuButton(
+  `url('${chrome.runtime.getURL("img/close.png")}')`,
+  ["blank"],
+  handleCloseClick
+);
 
 const buttonSection = document.createElement("section");
 
@@ -11,8 +19,18 @@ const tableSection = document.createElement("section");
 
 const selectElement = document.createElement("select");
 
-const btn_toggleEdit = new MenuButton("Editable", ["tablinks"], handleToggleEditClick, 2)
-const btn_fillDatabase = new MenuButton("FillDatabase", ["tablinks"], Api.filldatabaseWithMonth)
+const btn_toggleEdit = new MenuButton(
+  "Editable",
+  ["tablinks"],
+  handleToggleEditClick,
+  2
+);
+const btn_fillDatabase = new MenuButton(
+  "FillDatabase",
+  ["tablinks"],
+  Api.filldatabaseWithMonth
+);
+const btn_login = new MenuButton("Login", ["tablinks"], createLoginForm(tableSection),3);
 
 var currentTab = "";
 
@@ -21,7 +39,6 @@ openPopup();
 dragElement(popup);
 
 function initPopup() {
-
   popup.id = "popup";
   popup.classList.add("position-fixed");
 
@@ -33,6 +50,9 @@ function initPopup() {
   btn_toggleEdit.addEventListener("click", function () {
     openTab(2);
   });
+  btn_login.addEventListener("click", function () {
+    openTab(3);
+  });
   buttonSection.classList.add("section", "tab");
 
   tableSection.classList.add("section", "table-section");
@@ -42,6 +62,7 @@ function initPopup() {
   headSection.appendChild(btn_close);
 
   buttonSection.appendChild(btn_toggleEdit);
+  buttonSection.appendChild(btn_login);
   buttonSection.appendChild(btn_fillDatabase);
   initDropdown();
 
@@ -87,6 +108,7 @@ function handleCloseClick(element, event) {
 
 function openTab(tabID) {
   var tablinks = document.getElementsByClassName("tablinks");
+  console.log(tabID);
   Array.from(tablinks).forEach(function (tablink) {
     tablink.className = tablink.className.replace(" active", "");
   });
@@ -94,6 +116,9 @@ function openTab(tabID) {
   if (currentTab.id != tabID || currentTab.length == 0) {
     table.innerHTML = "";
     currentTab = currentTabByID;
+    if(tabID == 3){
+      createLoginForm(tableSection)
+    }
     tableSection.innerHTML = "";
     tableSection.appendChild(table);
   }

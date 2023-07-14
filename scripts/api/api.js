@@ -1,3 +1,4 @@
+var token = "";
 class Api {
   static filldatabaseWithMonth() {
     var month_year = document.querySelector(
@@ -16,26 +17,65 @@ class Api {
     });
   }
   static timeStampsByDay(tablerow, day_id) {
-    var timestamps = getTimeStampsByRow(tablerow);
-    var times = getTimesFromTimeStamp(timestamps);
-    times.forEach((time) => {
-      console.log(time);
-      var dbTime;
-      /* $.ajax({
-        method: "POST",
-        url: "https://192.168.0.33:8000/api/timestamp/",
-        data: {
-          time: dbTime,
-          day: day_id,
-        },
-        success: function (response) {
-          if (response["success"]) {
-          }
-        },
-      });*/
+    var fields = document.querySelectorAll(`td[data-r='${tablerow}'][data-c]`);
+    var array = Array.from(fields);
+    array.splice(0, 8);
+    array.forEach(function (element) {
+      if (
+        element.textContent.length != 0 &&
+        parseInt(element.textContent) &&
+        parseInt(element.textContent) < 19 
+      ) {
+        var dbTime = element.textContent + ":00";
+        $.ajax({
+          method: "POST",
+          url: "https://192.168.0.33:8000/api/timestamp/",
+          headers: {
+            'Authorization': 'Token ' + token  
+          },
+          data: {
+            time: dbTime,
+            day: day_id,
+          },
+          success: function (response) {
+            console.log("success");
+          },
+          error: function (xhr, textStatus, errorThrown) {
+            console.log("Fehler beim Ajax-Aufruf: " + errorThrown);
+          },
+        });
+      }
     });
   }
-  static absenceByDay(tablerow, day_id) {}
+  static absenceByDay(tablerow, day_id) {
+    var fields = document.querySelectorAll(
+      `td[data-r='${tablerow}'][data-c='6']:not(.td_green), td[data-r='${tablerow}'][data-c='7']:not(.td_green)`
+    );
+    fields.forEach(function (field) {
+      if (field.textContent != 0 && field.textContent.length > 5) {
+        var absence_time = field.textContent.slice(-4)+":00";
+        var absence_reason = field.textContent.split(" ")[0];
+        $.ajax({
+          method: "POST",
+          url: "https://192.168.0.33:8000/api/absence/",
+          headers: {
+            'Authorization': 'Token ' + token  
+          },
+          data: {
+            duration: absence_time,
+            reason: absence_reason,
+            day: day_id,
+          },
+          success: function (response) {
+            console.log("success");
+          },
+          error: function (xhr, textStatus, errorThrown) {
+            console.log("Fehler beim Ajax-Aufruf: " + errorThrown);
+          },
+        }); 
+      }
+    });
+  }
   static dayByTableRow(tablerow, month, year) {
     tablerow = parseInt(tablerow);
     var date =
@@ -60,6 +100,9 @@ class Api {
     $.ajax({
       method: "POST",
       url: "https://192.168.0.33:8000/api/day/",
+      headers: {
+            'Authorization': 'Token ' + token  
+          },
       data: {
         date: date,
         shouldTime: shouldtime,
@@ -67,11 +110,9 @@ class Api {
         balance: balance,
       },
       success: function (response) {
-        console.log("success");
-        var data = response["data"];
-        var day = new Day(data);
-        this.timeStampsByDay(tablerow, day.id);
-        this.absenceByDay(tablerow, day.id);
+        var day = new Day(response);
+        Api.timeStampsByDay(tablerow, day.id);
+        Api.absenceByDay(tablerow, day.id);
       },
       error: function (xhr, textStatus, errorThrown) {
         console.log("Fehler beim Ajax-Aufruf: " + errorThrown);
@@ -100,4 +141,22 @@ class Api {
     var monthNumber = (monthIndex + 1).toString().padStart(2, "0");
     return monthNumber;
   }
+  static login(username, password){
+    $.ajax({
+        url: 'https://192.168.0.33:8000/api/auth/login/',
+        method: 'GET',
+        data: {},
+        beforeSend: function (xhr) {
+          xhr.setRequestHeader ("Authorization", "Basic " + btoa(username + ":" + password));
+        },
+        success: function(response) {
+          token = response['key'];
+          console.log('Login erfolgreich:', response);
+        },
+        error: function(xhr, textStatus, errorThrown) {
+          console.error('Fehler beim Login:', errorThrown);
+        }
+      });
+      
+}
 }
